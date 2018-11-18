@@ -1,67 +1,47 @@
 using System.Collections.Generic;
 using empty.Models;
-using System.Linq;
+using empty.DAL;
+using System.Threading.Tasks;
 
 namespace empty.Services
 {
     public class TodosService : ITodosService
     {
         public List<Todo> todos = new List<Todo>();
-        public TodosService()
+        private ITodoRepository _todoRepository;
+        public TodosService(ITodoRepository todoRepository)
         {
-            todos.Add(new Todo("todo - 1"));
-            todos.Add(new Todo("todo - 1"));
-            todos.Add(new Todo("todo - 1"));
-            todos.Add(new Todo("todo - 1"));
-            todos.Add(new Todo("todo - 1"));
+            _todoRepository = todoRepository;
         }
 
-        public List<Todo> GetTodos()
+        public async Task<List<Todo>> GetTodos()
         {
-            return todos;
+            return await _todoRepository.GetTodosAsync();
         }
 
-        public Todo AddTodo(string content)
+        public async Task AddTodo(string content)
         {
-            Todo newTodo = new Todo(content);
-            todos.Add(newTodo);
-            return newTodo;
+            await _todoRepository.AddTodo(content);
         }
 
-        public bool DeleteTodoById(int id)
+        public async Task<bool> DeleteTodoById(int id)
         {
-            var newTodos = todos.Where(item => item.id != id);
-            if (newTodos.Count() == todos.Count())
-            {
-                return false;
-            }
-            else
-            {
-                todos = (List<Todo>)newTodos;
-                return true;
-            }
+            return await _todoRepository.DeleteTodoById(id);
         }
 
-        public bool ChangeTodoById(int id, string content, bool isFinished)
+        public async Task<bool> ChangeTodoById(int id, string content, bool isFinished)
         {
-            Todo todo = todos.FirstOrDefault(item => item.id == id);
-            if (todo == null) {
-                return false;
-            } else {
-                todo.content = content;
-                todo.isFinished = isFinished;
-                return true;
-            }
+            return await _todoRepository.UpdateTodoById(id, content, isFinished);
         }
 
     }
 
     public interface ITodosService
     {
-        List<Todo> GetTodos();
-        Todo AddTodo(string cotent);
-        bool ChangeTodoById(int id, string content, bool status);
-        bool DeleteTodoById(int id);
+        Task<List<Todo>> GetTodos();
+        Task AddTodo(string cotent);
+        Task<bool> ChangeTodoById(int id, string content, bool status);
+        Task<bool> DeleteTodoById(int id);
     }
 
 }

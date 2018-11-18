@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 using empty.Models;
 using empty.Services;
 
@@ -9,53 +10,40 @@ namespace empty.Controllers
     [Route("api/todos")]
     public class TodosControllers : Controller
     {
-        private readonly ITodosService todosStore;
+        private readonly ITodosService _todosStore;
 
         public TodosControllers (ITodosService todoService)
         {
-            todosStore = todoService;
+            _todosStore = todoService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Todo>> getTodos()
+        public async Task<ActionResult<IEnumerable<Todo>>> getTodos()
         {
             Response.StatusCode = StatusCodes.Status200OK;
-            return todosStore.GetTodos();
+            return await _todosStore.GetTodos();
         }
 
         [HttpPost]
-        public Todo addTodo([FromBody] Todo newTodo)
+        public async Task<bool> addTodo([FromBody] Todo newTodo)
         {
             Response.StatusCode = StatusCodes.Status201Created;
-            todosStore.AddTodo(newTodo.content);
-            return newTodo;
+            await _todosStore.AddTodo(newTodo.Content);
+            return true;
         }
 
         [HttpDelete("{id}")]
-        public string deleteTodo(int id)
+        public async Task<bool> deleteTodo(int id)
         {
-            bool isDelete = todosStore.DeleteTodoById(id);
-            if (isDelete) {
-                Response.StatusCode = StatusCodes.Status201Created;
-                return "deleted";
-            } else {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return "";
-            }
+            return await _todosStore.DeleteTodoById(id);
         }
         
         [HttpPut("{id}")]
-        public string updateTodo(int id, [FromBody] Todo updatedTodo)
+        public async Task<bool> updateTodo(int id, [FromBody] Todo updatedTodo)
         {
             Response.StatusCode = StatusCodes.Status201Created;
-            bool isUpdated = todosStore.ChangeTodoById(id, updatedTodo.content, updatedTodo.isFinished);
-            if (isUpdated) {
-                Response.StatusCode = StatusCodes.Status201Created;
-                return "updated";
-            } else {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return "";
-            }
+            await _todosStore.ChangeTodoById(id, updatedTodo.Content, updatedTodo.IsFinished);
+            return true;
         }
 
     }

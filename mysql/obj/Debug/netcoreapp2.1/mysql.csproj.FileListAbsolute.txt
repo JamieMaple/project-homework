@@ -1,0 +1,11 @@
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.csprojAssemblyReference.cache
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.csproj.CoreCompileInputs.cache
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.AssemblyInfoInputs.cache
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.AssemblyInfo.cs
+/Users/maple/Desktop/Homework/csharp-homework/mysql/bin/Debug/netcoreapp2.1/mysql.deps.json
+/Users/maple/Desktop/Homework/csharp-homework/mysql/bin/Debug/netcoreapp2.1/mysql.runtimeconfig.json
+/Users/maple/Desktop/Homework/csharp-homework/mysql/bin/Debug/netcoreapp2.1/mysql.runtimeconfig.dev.json
+/Users/maple/Desktop/Homework/csharp-homework/mysql/bin/Debug/netcoreapp2.1/mysql.dll
+/Users/maple/Desktop/Homework/csharp-homework/mysql/bin/Debug/netcoreapp2.1/mysql.pdb
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.dll
+/Users/maple/Desktop/Homework/csharp-homework/mysql/obj/Debug/netcoreapp2.1/mysql.pdb

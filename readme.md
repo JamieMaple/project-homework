@@ -5,7 +5,7 @@
 ### 实验
 
 - [ x ] 成功跑起来同时能够自定义一些配置
-- [  ] Todo List
-- [  ] Rest api
-- [  ] GraphQL
-- [  ] database & mysql
+- [ x ] Todo List
+- [ x ] Rest api
+- [ ] GraphQL
+- [ x ] database & mysql
