@@ -2,14 +2,21 @@
 
 ### 代码版本
 
-- dev-* / feat-* 开发分支
-- master 分支
-- release 分支
+- release 分支(线上版本)
+
+### How to run it
+
+1. `clone this repo && cd to the backend project path`
+
+1. `dotnet restore` (`dotnet core` required)
+
+1. `dotnet run`
 
 ### 技术上的设计
 
 - 前端
-    - 不出意外应该是 react 全家桶
+    - ~~不出意外应该是 `react` 全家桶~~ (被前端打脸了)
+    - `vue2`
 - 后端
     - [  ] .NET + Mysql
     - [  ] GraphQL APi & Documentation
