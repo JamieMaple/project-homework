@@ -1,0 +1,14 @@
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/bin/Debug/netcoreapp2.1/graphql-test.deps.json
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/bin/Debug/netcoreapp2.1/graphql-test.runtimeconfig.json
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/bin/Debug/netcoreapp2.1/graphql-test.runtimeconfig.dev.json
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/bin/Debug/netcoreapp2.1/graphql-test.dll
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/bin/Debug/netcoreapp2.1/graphql-test.pdb
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.csprojAssemblyReference.cache
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.csproj.CoreCompileInputs.cache
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.RazorAssemblyInfo.cache
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.RazorAssemblyInfo.cs
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.AssemblyInfoInputs.cache
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.AssemblyInfo.cs
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.RazorTargetAssemblyInfo.cache
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.dll
+/Users/maple/Desktop/Homework/csharp-homework/graphql-test/obj/Debug/netcoreapp2.1/graphql-test.pdb
