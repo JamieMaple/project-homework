@@ -7,5 +7,5 @@
 - [ x ] 成功跑起来同时能够自定义一些配置
 - [ x ] Todo List
 - [ x ] Rest api
-- [ ] GraphQL
+- [ x ] GraphQL
 - [ x ] database & mysql

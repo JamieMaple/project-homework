@@ -28,8 +28,7 @@ namespace empty.Controllers
         public async Task<bool> addTodo([FromBody] Todo newTodo)
         {
             Response.StatusCode = StatusCodes.Status201Created;
-            await _todosStore.AddTodo(newTodo.Content);
-            return true;
+            return await _todosStore.AddTodo(newTodo.Content);
         }
 
         [HttpDelete("{id}")]

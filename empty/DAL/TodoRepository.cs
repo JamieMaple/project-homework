@@ -1,5 +1,6 @@
 using Dapper;
 using Dapper.FastCrud;
+using System;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Collections.Generic;
@@ -22,12 +23,20 @@ namespace empty.DAL
             }
         }
 
-        public async Task AddTodo(string content)
+        public async Task<bool> AddTodo(string content)
         {
             using (var conn = base.Connection)
             {
                 conn.Open();
-                await conn.InsertAsync(new Todo { Content = content });
+                try
+                {
+                    await conn.InsertAsync(new Todo { Content = content });
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
         }
 
@@ -53,7 +62,7 @@ namespace empty.DAL
 
     public interface ITodoRepository {
         Task<List<Todo>> GetTodosAsync();
-        Task AddTodo(string content);
+        Task<bool> AddTodo(string content);
         Task<bool> DeleteTodoById(int id);
         Task<bool> UpdateTodoById(int id, string content, bool isFinished);
     }

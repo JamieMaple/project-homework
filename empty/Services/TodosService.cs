@@ -19,9 +19,9 @@ namespace empty.Services
             return await _todoRepository.GetTodosAsync();
         }
 
-        public async Task AddTodo(string content)
+        public async Task<bool> AddTodo(string content)
         {
-            await _todoRepository.AddTodo(content);
+            return await _todoRepository.AddTodo(content);
         }
 
         public async Task<bool> DeleteTodoById(int id)
@@ -39,7 +39,7 @@ namespace empty.Services
     public interface ITodosService
     {
         Task<List<Todo>> GetTodos();
-        Task AddTodo(string cotent);
+        Task<bool> AddTodo(string cotent);
         Task<bool> ChangeTodoById(int id, string content, bool status);
         Task<bool> DeleteTodoById(int id);
     }
