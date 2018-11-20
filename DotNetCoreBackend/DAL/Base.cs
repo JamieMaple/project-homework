@@ -1,4 +1,4 @@
-namespace DotNetCoreBackend.Models
+namespace DotNetCoreBackend.DAL
 {
     public class Base
     {

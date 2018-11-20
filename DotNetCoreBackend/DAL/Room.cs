@@ -1,8 +1,8 @@
-namespace DotNetCoreBackend.Models
+namespace DotNetCoreBackend.DAL
 {
     public enum RoomStatus {
-        Idle = 0,
-        Busy = 1
+        Idle = 1,
+        Busy = 2
     }
 
 
@@ -10,9 +10,9 @@ namespace DotNetCoreBackend.Models
     {
         public string Name { get; set; }
 
-        public int floor { get; set; }
+        public int Floor { get; set; }
 
-        public RoomStatus status { get; set; }
+        public RoomStatus Status { get; set; }
 
         public long LastUpdateAt { get; set; }
     }

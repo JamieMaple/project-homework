@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DotNetCoreBackend.Models
+namespace DotNetCoreBackend.DAL
 {
     public enum OrderStatus {
         Created  = 1,

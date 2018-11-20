@@ -1,8 +1,8 @@
-namespace DotNetCoreBackend.Models
+namespace DotNetCoreBackend.DAL
 {
     public class Food : Base
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public double UnitPrice { get; set; }
     }
