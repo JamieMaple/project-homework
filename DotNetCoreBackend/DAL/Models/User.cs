@@ -15,5 +15,15 @@ namespace DotNetCoreBackend.DAL
         // input password not in db
 
         public UserType Type { get; set; }
+
+        public long LastLoginAt { get; set; }
+    }
+
+
+    public class LoginUser : User
+    {
+        public string Password { get; set; }
+
+        public string Salt { get; set; }
     }
 }

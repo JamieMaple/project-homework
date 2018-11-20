@@ -1,8 +1,11 @@
 using GraphQL.Types;
+using GraphQL.Authorization;
+
 using DotNetCoreBackend.Services;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
+    [GraphQLAuthorize(Policy = "WaiterPolicy")]
     public class FoodQuery : ObjectGraphType
     {
         public FoodQuery(IFoodService foodService)

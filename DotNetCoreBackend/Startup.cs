@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Dapper.FastCrud;
 using GraphQL;
-using GraphQL.Server;
 using GraphiQl;
+using GraphQL.Server;
+using GraphQL.Authorization;
+using GraphQL.Validation;
 using GraphQL.Server.Ui.Playground;
 
 using DotNetCoreBackend.Services;
@@ -38,7 +43,23 @@ namespace DotNetCoreBackend
         {
             OrmConfiguration.DefaultDialect = SqlDialect.MySql;
 
-            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    };
+                });
+
+            services.AddGraphQLAuth();
+
 
             services.AddTransient<IRoomRepository, RoomRepository>();
             services.AddTransient<IFoodRepository, FoodRepository>();
@@ -55,7 +76,13 @@ namespace DotNetCoreBackend
                     options.EnableMetrics = true;
                     options.ExposeExceptions = Env.IsDevelopment();
                 })
-                .AddDataLoader();
+                .AddDataLoader()
+                .AddUserContextBuilder(ctx =>
+                {
+                    return new GraphQLUserContext {
+                        User = ctx.User
+                    };
+                });
 
             services.AddSingleton<RoomStatusEnum>();
             services.AddSingleton<RoomType>();
@@ -75,6 +102,11 @@ namespace DotNetCoreBackend
         {
             string entry = "/api/graphql";
             string adminEntry = "/admin/api/graphql";
+
+            app.UseAuthentication();
+
+            // TODO: decode token
+            // app.UseGraphQlWithAuth();
 
             app.UseGraphQL<BasicSchema>(entry);
             app.UseGraphQL<RootSchema>(adminEntry);

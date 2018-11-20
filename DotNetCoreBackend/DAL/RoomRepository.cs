@@ -11,7 +11,6 @@ namespace DotNetCoreBackend.DAL
         public async Task<List<Room>> GetAllRooms()
         {
             await Task.Delay(500);
-            System.Console.WriteLine("here");
             return new List<Room>()
             {
                 new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
@@ -55,13 +54,9 @@ namespace DotNetCoreBackend.DAL
          *  TODO: change Room
          */
 
-        public bool ChangeRoomStatus()
+        public async Task<bool> ChangeRoomStatus()
         {
-            return false;
-        }
-
-        public bool ChangeRoomName()
-        {
+            await Task.Delay(300);
             return false;
         }
     }
