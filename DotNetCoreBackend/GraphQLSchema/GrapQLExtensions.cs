@@ -8,10 +8,33 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using GraphQL.Authorization;
 using GraphQL.Validation;
 
-namespace DotNetCoreBackend
+namespace DotNetCoreBackend.GraphQLSchema
 {
-    public static class GraphQLAuthExtensions
+    public static class GraphQLExtensions
     {
+        public static void AddGraphQLCustomTypeSupport(this IServiceCollection services)
+        {
+            services.AddSingleton<FoodInputType>();
+            services.AddSingleton<FoodQuery>();
+            services.AddSingleton<FoodType>();
+
+            services.AddSingleton<RoomType>();
+            services.AddSingleton<RoomStatusEnum>();
+            services.AddSingleton<RoomQuery>();
+
+            services.AddSingleton<UserType>();
+            services.AddSingleton<UserInputType>();
+            services.AddSingleton<UserQuery>();
+            services.AddSingleton<UserMutation>();
+
+            services.AddSingleton<BasicMutation>();
+            services.AddSingleton<BasicQuery>();
+            services.AddSingleton<BasicSchema>();
+
+            services.AddSingleton<RootQuery>();
+            services.AddSingleton<RootSchema>();
+        }
+
         public static void AddGraphQLAuth(this IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

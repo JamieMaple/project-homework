@@ -46,8 +46,16 @@ namespace DotNetCoreBackend.Services
 
         public async Task<string> Authentication(string username, string password)
         {
-            await Task.Delay(300);
-            return TokenBuild();
+            var user = await _userRepository.GetUserByUserName(username);
+
+            if (user == null)
+            {
+                return "";
+            }
+
+            var hashedPassword = _userRepository.HashUserPasswordWithSalt(password, user.Salt);
+
+            return hashedPassword.Equals(user.Password) ? TokenBuild() : "";
         }
 
         public Task<bool> NewWaiter(string username, string password)
@@ -55,9 +63,9 @@ namespace DotNetCoreBackend.Services
             return _userRepository.NewUser(username, password, UserType.Waiter);
         }
 
-        public async Task<bool> NewAdmin(string username, string password)
+        public Task<bool> NewAdmin(string username, string password)
         {
-            return false;
+            return _userRepository.NewUser(username, password, UserType.Admin);
         }
     }
 

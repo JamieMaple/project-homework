@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DotNetCoreBackend.DAL
 {
-    public class OrderRepository : BaseRepository
+    public class OrderRepository : BaseRepository, IOrderRepository
     {
         public OrderRepository(IConfiguration config) : base(config) {  }
 
@@ -18,5 +18,10 @@ namespace DotNetCoreBackend.DAL
 /*
  *  TODO: curd
  */
+    }
+
+    public interface IOrderRepository
+    {
+
     }
 }

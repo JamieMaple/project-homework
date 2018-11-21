@@ -7,7 +7,7 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public RootQuery(IRoomService roomService)
         {
-            Name = "Query";
+            Name = "RootQuery";
 
             // FieldAsync<ListGraphType<RoomType>>("rooms", resolve: async _ => await roomService.GetAllRooms());
             Field<RoomQuery>("room", resolve: _ => new {});

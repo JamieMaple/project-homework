@@ -14,24 +14,35 @@ namespace DotNetCoreBackend.GraphQLSchema
             IUserService userService
         )
         {
-            FieldAsync<ListGraphType<RoomType>>("rooms", resolve: async _ => await roomService.GetAllRooms());
+            Name = "query";
 
-            FieldAsync<ListGraphType<FoodType>>("foods", resolve: async _ => await foodService.GetAllFoodWithOffsetAndLimit(0, 100))
+            Field<RoomQuery>("room", resolve: _ => new {});
+
+            FieldAsync<ListGraphType<FoodType>>("food", resolve: async _ => await foodService.GetAllFoodWithOffsetAndLimit(0, 100))
                 .AuthorizeWith("WaiterPolicy");
 
-            FieldAsync<StringGraphType>("token", resolve: async _ =>
-            {
-                return await userService.Authentication("username", "password");
-            });
+            Field<UserQuery>("user", resolve: _ => new {});
+        }
+    }
+
+    public class BasicMutation : ObjectGraphType
+    {
+        public BasicMutation(IUserService userService)
+        {
+            Name = "mutataion";
+
+            Field<UserMutation>("user", resolve: _ => new {});
         }
     }
 
 
     public class BasicSchema : Schema
     {
-        public BasicSchema(IDependencyResolver resolver)
+        public BasicSchema(IDependencyResolver resolver): base(resolver)
         {
             Query = resolver.Resolve<BasicQuery>();
+
+            Mutation = resolver.Resolve<BasicMutation>();
         }
     }
 }
