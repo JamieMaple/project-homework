@@ -107,8 +107,32 @@ def saveToCSV(filename, dataList):
     f.close()
 
 
+class Room:
+    index = 0
+
+    def __init__(self, room_name, floor):
+        Room.index += 1
+        self.id = Room.index
+        self.name = room_name
+        self.floor = floor
+        create_at = int(time())
+        self.create_at = create_at
+        self.last_update_at = create_at
+
+
+def roomsGenerator(floors, count):
+    rooms = []
+    for out in range(floors):
+        floor = out + 1
+        for inner in range(count):
+            c = inner + 1
+            rooms.append(Room("{:d}{:02d}".format(floor, c), floor))
+    return rooms
+
+
 if __name__ == "__main__":
-    ids = handleSourceFile("source.txt")
-    foods, categories = getFoodsAndCategories(ids)
-    saveToCSV('foods.csv', foods)
-    saveToCSV('categories.csv', categories)
+    # ids = handleSourceFile("source.txt")
+    # foods, categories = getFoodsAndCategories(ids)
+    # saveToCSV('foods.csv', foods)
+    # saveToCSV('categories.csv', categories)
+    saveToCSV('rooms.csv', roomsGenerator(20, 15))
