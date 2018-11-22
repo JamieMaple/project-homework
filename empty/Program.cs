@@ -17,8 +17,15 @@ namespace empty
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
+            System.Console.WriteLine(env.ContentRootPath);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            var configuration = builder.Build();
             System.Console.WriteLine(configuration.GetConnectionString("MyConnectionString"));
             Configuration = configuration;
         }
