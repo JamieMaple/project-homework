@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DotNetCoreBackend.DAL
 {
     public enum RoomStatus {
@@ -5,7 +7,7 @@ namespace DotNetCoreBackend.DAL
         Busy = 2
     }
 
-
+    [Table("room")]
     public class Room : Base
     {
         public string Name { get; set; }
@@ -15,5 +17,16 @@ namespace DotNetCoreBackend.DAL
         public RoomStatus Status { get; set; }
 
         public long LastUpdateAt { get; set; }
+    }
+
+    [Table("room_history")]
+    public class RoomHisotry : Base
+    {
+        public string Name { get; set; }
+
+        public int Floor { get; set; }
+
+        [Column("revert_at")]
+        public int revertAt { get; set; }
     }
 }

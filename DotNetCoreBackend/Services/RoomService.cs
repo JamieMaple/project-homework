@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -16,7 +17,28 @@ namespace DotNetCoreBackend.Services
 
         public async Task<List<Room>> GetAllRooms()
         {
-            return await _roomRepository.GetAllRooms();
+            try
+            {
+                return await _roomRepository.GetAllRooms();
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine(err);
+                return null;
+            }
+        }
+
+        public async Task<bool> ChangeRoomStatus(int roomId, RoomStatus status)
+        {
+            try
+            {
+                return await _roomRepository.ChangeRoomStatus(roomId, status);
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
         }
     }
 
@@ -24,5 +46,6 @@ namespace DotNetCoreBackend.Services
     public interface IRoomService
     {
         Task<List<Room>> GetAllRooms();
+        Task<bool> ChangeRoomStatus(int roomId, RoomStatus status);
     }
 }

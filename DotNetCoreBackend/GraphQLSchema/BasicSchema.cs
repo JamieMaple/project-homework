@@ -3,6 +3,7 @@ using GraphQL.Types;
 using GraphQL.Authorization;
 
 using DotNetCoreBackend.Services;
+using DotNetCoreBackend.Security;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
@@ -19,9 +20,14 @@ namespace DotNetCoreBackend.GraphQLSchema
             Field<RoomQuery>("room", resolve: _ => new {});
 
             FieldAsync<ListGraphType<FoodType>>("food", resolve: async _ => await foodService.GetAllFoodWithOffsetAndLimit(0, 100))
-                .AuthorizeWith("WaiterPolicy");
+                .AuthorizeWith(Policy.WaiterPolicy);
 
             Field<UserQuery>("user", resolve: _ => new {});
+
+            FieldAsync<ListGraphType<CategoryType>>("categories", resolve: async context =>
+            {
+                return await foodService.GetAllCategories();
+            });
         }
     }
 
@@ -31,7 +37,9 @@ namespace DotNetCoreBackend.GraphQLSchema
         {
             Name = "mutataion";
 
-            Field<UserMutation>("user", resolve: _ => new {});
+            Field<OrderMutatition>("order", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
+            Field<RoomMutation>("room", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
+            Field<UserMutation>("user", resolve: _ => new {}).AuthorizeWith(Policy.AdminPolicy);
         }
     }
 

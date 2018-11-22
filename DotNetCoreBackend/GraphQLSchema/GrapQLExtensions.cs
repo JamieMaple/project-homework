@@ -8,12 +8,17 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using GraphQL.Authorization;
 using GraphQL.Validation;
 
+using DotNetCoreBackend.Security;
+
 namespace DotNetCoreBackend.GraphQLSchema
 {
     public static class GraphQLExtensions
     {
         public static void AddGraphQLCustomTypeSupport(this IServiceCollection services)
         {
+
+            services.AddSingleton<CategoryType>();
+
             services.AddSingleton<FoodInputType>();
             services.AddSingleton<FoodQuery>();
             services.AddSingleton<FoodType>();
@@ -21,6 +26,12 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<RoomType>();
             services.AddSingleton<RoomStatusEnum>();
             services.AddSingleton<RoomQuery>();
+            services.AddSingleton<RoomMutation>();
+
+            services.AddSingleton<OrderType>();
+            services.AddSingleton<OrderInputType>();
+            services.AddSingleton<FoodListItemInputType>();
+            services.AddSingleton<OrderMutatition>();
 
             services.AddSingleton<UserType>();
             services.AddSingleton<UserInputType>();
@@ -35,6 +46,7 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<RootSchema>();
         }
 
+
         public static void AddGraphQLAuth(this IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -44,9 +56,11 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.TryAddSingleton(s =>
             {
                 var authSettings = new AuthorizationSettings();
-                authSettings.AddPolicy("WaiterPolicy", p => p.RequireClaim(ClaimTypes.Role, "waiter"));
-                authSettings.AddPolicy("AdminPolicy", p => p.RequireClaim(ClaimTypes.Role, "admin"));
-                authSettings.AddPolicy("RootPolicy", p => p.RequireClaim(ClaimTypes.Role, "root"));
+
+                authSettings.AddPolicy(Policy.WaiterPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.WaiterRole));
+                authSettings.AddPolicy(Policy.AdminPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.AdminRole));
+                authSettings.AddPolicy(Policy.RootPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.RootRole));
+
                 return authSettings;
             });
         }

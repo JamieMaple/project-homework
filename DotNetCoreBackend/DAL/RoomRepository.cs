@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -53,15 +54,27 @@ namespace DotNetCoreBackend.DAL
          *  TODO: change Room
          */
 
-        public async Task<bool> ChangeRoomStatus()
+        public async Task<bool> ChangeRoomStatus(int roomId, RoomStatus status)
         {
-            await Task.Delay(300);
-            return false;
+            using (var conn = Connection)
+            {
+                var room = await conn.GetAsync(new Room { Id = roomId });
+                var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+                room.LastUpdateAt = now;
+                room.Status = status;
+
+                // history
+                // var history = new RoomHisotry {  }
+
+                return await conn.UpdateAsync(room);
+            }
         }
     }
 
     public interface IRoomRepository
     {
         Task<List<Room>>GetAllRooms();
+        Task<bool> ChangeRoomStatus(int roomId, RoomStatus status);
     }
 }

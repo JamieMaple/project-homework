@@ -5,6 +5,7 @@ using DotNetCoreBackend.DAL;
 namespace DotNetCoreBackend.GraphQLSchema
 {
     public class RoomStatusEnum : EnumerationGraphType<RoomStatus> {  }
+
     public class RoomType : ObjectGraphType<Room>
     {
         public RoomType()

@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using DotNetCoreBackend.DAL;
 
@@ -7,21 +9,43 @@ namespace DotNetCoreBackend.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IFoodRepository _foodRepository;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IFoodRepository foodRepository)
         {
             _orderRepository = orderRepository;
+            _foodRepository = foodRepository;
         }
 
-        public async Task<bool> CreateNewOrder()
+        public async Task<bool> DispatchNewOrder(int roomId, int waiterId, List<FoodListItem> foodItemList)
         {
-            await Task.Delay(300);
-            return false;
+            try
+            {
+                var foods = await _foodRepository.GetFoodBySomeFoodItem(foodItemList);
+                double sum = 0;
+                foods.ForEach(food => sum += food.UnitPrice * food.Count);
+
+                var order = new Order {
+                    RoomId = roomId,
+                    WaiterId = waiterId,
+                    FoodList = foods,
+                    Status = OrderStatus.Created,
+                    TotalPrice = sum,
+                    CreateAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                };
+                await _orderRepository.DispatchOrder(order);
+            } catch(Exception err)
+            {
+                Console.WriteLine(err);
+            }
+
+            return true;
         }
     }
 
 
     public interface IOrderService
     {
+        Task<bool> DispatchNewOrder(int roomId, int waiterId, List<FoodListItem> foodItemList);
     }
 }

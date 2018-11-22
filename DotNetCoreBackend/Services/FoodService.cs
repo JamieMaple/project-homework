@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -14,9 +15,30 @@ namespace DotNetCoreBackend.Services
             _foodRepository = foodRepository;
         }
 
-        public Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit)
+        public async Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit)
         {
-            return _foodRepository.GetAllFoodWithOffsetAndLimit(offset, limit);
+            try
+            {
+                return await _foodRepository.GetAllFoodWithOffsetAndLimit(offset, limit);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return null;
+            }
+        }
+
+        public async Task<List<Category>> GetAllCategories()
+        {
+            try
+            {
+                return await _foodRepository.GetAllCategories();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return null;
+            }
         }
     }
 
@@ -24,7 +46,7 @@ namespace DotNetCoreBackend.Services
     public interface IFoodService
     {
         Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit);
+        Task<List<Category>> GetAllCategories();
     }
 }
-
 

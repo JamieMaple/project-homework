@@ -2,7 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
 using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
@@ -21,27 +20,44 @@ namespace DotNetCoreBackend.DAL
             }
         }
 
-        public async Task<List<Food>> GetFoodBySomeId(List<int> ids)
+        public async Task<List<FoodListItem>> GetFoodBySomeFoodItem(List<FoodListItem> foodListItem)
         {
-            List<Food> foodList = new List<Food>();
-            ids.ForEach(id => foodList.Append(new Food { Id = id }));
+            var tasks = new List<Task<FoodListItem>>();
+            var foodList = new List<FoodListItem>();
             using (var conn = Connection)
             {
                 conn.Open();
-                await conn.GetAsync(foodList);
+
+                foreach (var food in foodListItem)
+                {
+                    var item = await conn.GetAsync(new FoodListItem { Id = food.Id });
+                    item.Count = food.Count;
+                    foodList.Add(item);
+                }
             }
 
-            return null;
+            return foodList.ToList();
         }
 
-/*
- *  TODO: curd
- */
+        public async Task<List<Category>> GetAllCategories()
+        {
+            using (var conn = Connection)
+            {
+                var result = await conn.FindAsync<Category>();
+
+                return result.ToList();
+            }
+        }
+        /*
+         *  TODO: curd
+         */
     }
 
 
     public interface IFoodRepository
     {
         Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit);
+        Task<List<FoodListItem>> GetFoodBySomeFoodItem(List<FoodListItem> foodListItem);
+        Task<List<Category>> GetAllCategories();
     }
 }

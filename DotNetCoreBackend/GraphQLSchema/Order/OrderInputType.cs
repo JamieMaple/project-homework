@@ -21,7 +21,6 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "OrderInputType";
             Field(x => x.RoomId);
             Field(x => x.WaiterId);
-            Field(x => x.Status).AuthorizeWith("AdminPolicy");
             Field<ListGraphType<FoodListItemInputType>>("foodList");
         }
     }

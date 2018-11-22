@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 
 using DotNetCoreBackend.DAL;
+using DotNetCoreBackend.Security;
 
 namespace DotNetCoreBackend.Services
 {
@@ -25,10 +26,11 @@ namespace DotNetCoreBackend.Services
             _config = config;
         }
 
-        private string TokenBuild()
+        private string TokenBuild(int userId)
         {
             var claims = new[] {
-                new Claim(ClaimTypes.Role, "waiter")
+                new Claim(ClaimTypes.Role, Role.WaiterRole),
+                new Claim(ClaimTypes.PrimarySid, Convert.ToString(userId)),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -55,7 +57,7 @@ namespace DotNetCoreBackend.Services
 
             var hashedPassword = _userRepository.HashUserPasswordWithSalt(password, user.Salt);
 
-            return hashedPassword.Equals(user.Password) ? TokenBuild() : "";
+            return hashedPassword.Equals(user.Password) ? TokenBuild(user.Id) : "";
         }
 
         public Task<bool> NewWaiter(string username, string password)

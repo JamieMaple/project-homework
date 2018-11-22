@@ -12,6 +12,8 @@ namespace DotNetCoreBackend.GraphQLSchema
             Field(x => x.Id);
             Field(x => x.Name);
             Field(x => x.UnitPrice);
+            Field(x => x.Image);
+            Field(x => x.CategoryId);
         }
     }
 }

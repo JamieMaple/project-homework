@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Dapper.FastCrud;
+
 
 namespace DotNetCoreBackend.DAL
 {
@@ -9,9 +11,11 @@ namespace DotNetCoreBackend.DAL
 
         public async Task<bool> DispatchOrder(Order order)
         {
-            // TODO: finishi dispatch order
-            await Task.Delay(400);
-            return false;
+            using (var conn = Connection)
+            {
+                await conn.InsertAsync(order);
+                return true;
+            }
         }
 
 /*
@@ -21,6 +25,6 @@ namespace DotNetCoreBackend.DAL
 
     public interface IOrderRepository
     {
-
+        Task<bool> DispatchOrder(Order order);
     }
 }
