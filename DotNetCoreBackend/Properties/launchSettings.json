@@ -2,12 +2,7 @@
   "profiles": {
     "DotNetCoreBackend": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/graphql",
-      "applicationUrl": "http://localhost:80",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "applicationUrl": "http://localhost:8081"
     }
   }
 }
