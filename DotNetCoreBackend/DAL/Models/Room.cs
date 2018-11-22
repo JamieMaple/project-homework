@@ -16,6 +16,7 @@ namespace DotNetCoreBackend.DAL
 
         public RoomStatus Status { get; set; }
 
+        [Column("last_update_at")]
         public long LastUpdateAt { get; set; }
     }
 

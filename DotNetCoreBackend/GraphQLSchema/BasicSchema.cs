@@ -16,18 +16,14 @@ namespace DotNetCoreBackend.GraphQLSchema
         )
         {
             Name = "query";
+            Description = "查询模块";
 
             Field<RoomQuery>("room", resolve: _ => new {});
 
-            FieldAsync<ListGraphType<FoodType>>("food", resolve: async _ => await foodService.GetAllFoodWithOffsetAndLimit(0, 100))
-                .AuthorizeWith(Policy.WaiterPolicy);
+            Field<FoodQuery>("food", resolve: _ => new {});
 
             Field<UserQuery>("user", resolve: _ => new {});
 
-            FieldAsync<ListGraphType<CategoryType>>("categories", resolve: async context =>
-            {
-                return await foodService.GetAllCategories();
-            });
         }
     }
 
@@ -36,8 +32,9 @@ namespace DotNetCoreBackend.GraphQLSchema
         public BasicMutation(IUserService userService)
         {
             Name = "mutataion";
+            Description = "修改模块";
 
-            Field<OrderMutatition>("order", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
+            Field<OrderMutation>("order", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
             Field<RoomMutation>("room", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
             Field<UserMutation>("user", resolve: _ => new {}).AuthorizeWith(Policy.AdminPolicy);
         }

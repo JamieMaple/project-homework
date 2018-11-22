@@ -10,6 +10,8 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public RoomMutation(IRoomService roomService)
         {
+            Name = "RoomMutation";
+            Description = "这里主要包含了修改房间状态功能";
             // some mutation
             FieldAsync<BooleanGraphType>(
                 "changeRoomStatus",

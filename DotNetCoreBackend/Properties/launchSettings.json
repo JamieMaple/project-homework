@@ -4,7 +4,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/graphql",
-      "applicationUrl": "http://localhost:8081",
+      "applicationUrl": "http://10.193.208.15:8081",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

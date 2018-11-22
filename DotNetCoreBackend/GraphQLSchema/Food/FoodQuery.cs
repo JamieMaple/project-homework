@@ -10,6 +10,9 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public FoodQuery(IFoodService foodService)
         {
+            Name = "FoodQuery";
+            Description = "这里包含了有菜单";
+
             FieldAsync<ListGraphType<FoodType>>("foods", resolve: async context =>
             {
                 return await foodService.GetAllFoodWithOffsetAndLimit(0, 120);

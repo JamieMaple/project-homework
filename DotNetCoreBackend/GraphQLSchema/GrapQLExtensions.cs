@@ -31,7 +31,7 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<OrderType>();
             services.AddSingleton<OrderInputType>();
             services.AddSingleton<FoodListItemInputType>();
-            services.AddSingleton<OrderMutatition>();
+            services.AddSingleton<OrderMutation>();
 
             services.AddSingleton<UserType>();
             services.AddSingleton<UserInputType>();

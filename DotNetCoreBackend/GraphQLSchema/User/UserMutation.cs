@@ -11,6 +11,7 @@ namespace DotNetCoreBackend.GraphQLSchema
         public UserMutation(IUserService userService)
         {
             Name = "UserMutation";
+            Description = "主要包含了用户登陆等功能";
 
             FieldAsync<BooleanGraphType>(
                 "newWaiter",

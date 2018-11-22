@@ -10,6 +10,9 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public UserQuery(IUserService userService)
         {
+            Name = "UserQuery";
+            Description = "包含了用户登陆等功能";
+
             FieldAsync<StringGraphType>(
                 "token",
                 arguments: new QueryArguments(

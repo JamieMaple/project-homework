@@ -10,10 +10,14 @@ using DotNetCoreBackend.Services;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
-    public class OrderMutatition : ObjectGraphType
+    public class OrderMutation : ObjectGraphType
     {
-        public OrderMutatition(IOrderService orderService, IRoomService roomService)
+        public OrderMutation(IOrderService orderService, IRoomService roomService)
         {
+            Name = "OrderMutation";
+            Description = "这里主要包含了添加订单等功能";
+
+
             Field<BooleanGraphType>(
                 "createOrder",
                 arguments: new QueryArguments(

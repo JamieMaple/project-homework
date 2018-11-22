@@ -10,7 +10,8 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public RoomQuery(IRoomService roomService)
         {
-            Name = "Room";
+            Name = "RoomQuery";
+            Description = "房间模块，主要包含房间的查询";
 
             FieldAsync<ListGraphType<RoomType>>(
                 "rooms",
