@@ -34,6 +34,11 @@ namespace empty.Services
             return await _todoRepository.UpdateTodoById(id, content, isFinished);
         }
 
+        public async Task<List<Todo>> GetByIds(List<int> ids)
+        {
+            return await _todoRepository.GetTodosByIds(ids);
+        }
+
     }
 
     public interface ITodosService
@@ -42,6 +47,7 @@ namespace empty.Services
         Task<bool> AddTodo(string cotent);
         Task<bool> ChangeTodoById(int id, string content, bool status);
         Task<bool> DeleteTodoById(int id);
+        Task<List<Todo>> GetByIds(List<int> ids);
     }
 
 }

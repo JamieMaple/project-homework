@@ -23,6 +23,21 @@ namespace empty.DAL
             }
         }
 
+        public async Task<List<Todo>> GetTodosByIds(List<int> ids)
+        {
+            var subList = new List<string>();
+            subList.Append("id = 1");
+            using (var conn = Connection)
+            {
+                conn.Open();
+                ids.ForEach(id => subList.Add($"id = {id}"));
+                var wheres = String.Join(" or ", subList.ToArray());
+                var sql = $"select * from todos where {wheres}";
+                var result = await conn.QueryAsync<Todo>(sql);
+                return result.ToList();
+            }
+        }
+
         public async Task<bool> AddTodo(string content)
         {
             using (var conn = base.Connection)
@@ -62,6 +77,7 @@ namespace empty.DAL
 
     public interface ITodoRepository {
         Task<List<Todo>> GetTodosAsync();
+        Task<List<Todo>> GetTodosByIds(List<int> ids);
         Task<bool> AddTodo(string content);
         Task<bool> DeleteTodoById(int id);
         Task<bool> UpdateTodoById(int id, string content, bool isFinished);
