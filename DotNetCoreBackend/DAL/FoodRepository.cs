@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
+using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
 {
@@ -10,13 +13,25 @@ namespace DotNetCoreBackend.DAL
 
         public async Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit)
         {
-            await Task.Delay(500);
-            return new List<Food>()
+            using (var conn = Connection)
             {
-                new Food { Id = 1, Name = "food-1", UnitPrice = 10.5 },
-                new Food { Id = 2, Name = "food-2", UnitPrice = 20.2 },
-                new Food { Id = 3, Name = "food-3", UnitPrice = 30.5 },
-            };
+                conn.Open();
+                var result = await conn.FindAsync<Food>(s => s.Skip(offset).Top(limit));
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Food>> GetFoodBySomeId(List<int> ids)
+        {
+            List<Food> foodList = new List<Food>();
+            ids.ForEach(id => foodList.Append(new Food { Id = id }));
+            using (var conn = Connection)
+            {
+                conn.Open();
+                await conn.GetAsync(foodList);
+            }
+
+            return null;
         }
 
 /*

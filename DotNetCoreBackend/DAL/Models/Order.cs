@@ -15,9 +15,11 @@ namespace DotNetCoreBackend.DAL
     }
 
 
-    public class Order
+    public class Order : Base
     {
         public int RoomId { get; set; }
+
+        public int WaiterId { get; set; }
 
         // different from Food class
         public List<FoodListItem> FoodList { get; set; }

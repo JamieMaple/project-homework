@@ -7,7 +7,8 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public FoodInputType()
         {
-            Name = "Food List Item";
+            Name = "FoodInputType";
+
             Field(x => x.Id);
             Field(x => x.Name);
             Field(x => x.Count);

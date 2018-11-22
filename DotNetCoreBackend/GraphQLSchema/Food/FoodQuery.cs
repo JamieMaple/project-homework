@@ -12,7 +12,7 @@ namespace DotNetCoreBackend.GraphQLSchema
         {
             FieldAsync<ListGraphType<FoodType>>("foods", resolve: async context =>
             {
-                return await foodService.GetAllFoodWithOffsetAndLimit(0, 20);
+                return await foodService.GetAllFoodWithOffsetAndLimit(0, 120);
             });
         }
     }

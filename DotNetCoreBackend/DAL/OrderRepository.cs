@@ -7,8 +7,7 @@ namespace DotNetCoreBackend.DAL
     {
         public OrderRepository(IConfiguration config) : base(config) {  }
 
-
-        public async Task<bool> DispatchOrder()
+        public async Task<bool> DispatchOrder(Order order)
         {
             // TODO: finishi dispatch order
             await Task.Delay(400);

@@ -1,6 +1,8 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
 {
@@ -10,15 +12,12 @@ namespace DotNetCoreBackend.DAL
 
         public async Task<List<Room>> GetAllRooms()
         {
-            await Task.Delay(500);
-            return new List<Room>()
+            using (var conn = Connection)
             {
-                new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
-                new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
-                new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
-                new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
-                new Room { Id = 1, Name = "401", Status = RoomStatus.Busy, Floor = 4 },
-            };
+                conn.Open();
+                var rooms = await conn.FindAsync<Room>();
+                return rooms.ToList();
+            }
         }
 
         /*
