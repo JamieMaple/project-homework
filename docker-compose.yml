@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  web:
+    container_name: "stupid_web"
+    build: .
+    ports:
+      - "8081:80"
+    volumes:
+      - ./.config/appsettings.json:/app/appsettings.json
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+  db:
+    container_name: "stupid_db"
+    image: "mysql:5.7"
+    restart: always
+    volumes:
+      - ./data:/db
+      - ./data/data.sql:/docker-entrypoint-initdb.d/data.sql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: cs_hotel
+      MYSQL_USER: hotel
+      MYSQL_PASSWORD: password
