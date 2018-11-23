@@ -54,10 +54,11 @@ namespace DotNetCoreBackend.DAL
          *  TODO: change Room
          */
 
-        public async Task<bool> ChangeRoomStatus(int roomId, RoomStatus status)
+        public async Task<Room> ChangeRoomStatus(int roomId, RoomStatus status)
         {
             using (var conn = Connection)
             {
+                conn.Open();
                 var room = await conn.GetAsync(new Room { Id = roomId });
                 var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -67,14 +68,34 @@ namespace DotNetCoreBackend.DAL
                 // history
                 // var history = new RoomHisotry {  }
 
-                return await conn.UpdateAsync(room);
+                await conn.UpdateAsync(room);
+                return room;
             }
+        }
+
+        public async Task<RoomHistory> SaveRoomHistory(Room room, int userId)
+        {
+            var roomHistory = new RoomHistory {
+                RoomId = room.Id,
+                WaiterId = userId,
+                Name = room.Name,
+                Status = room.Status,
+                CreateAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            };
+            using (var conn = Connection)
+            {
+                conn.Open();
+                await conn.InsertAsync(roomHistory);
+            }
+
+            return roomHistory;
         }
     }
 
     public interface IRoomRepository
     {
         Task<List<Room>>GetAllRooms();
-        Task<bool> ChangeRoomStatus(int roomId, RoomStatus status);
+        Task<Room> ChangeRoomStatus(int roomId, RoomStatus status);
+        Task<RoomHistory> SaveRoomHistory(Room room, int userId);
     }
 }

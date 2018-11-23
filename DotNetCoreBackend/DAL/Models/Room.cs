@@ -21,13 +21,16 @@ namespace DotNetCoreBackend.DAL
     }
 
     [Table("room_history")]
-    public class RoomHisotry : Base
+    public class RoomHistory : Base
     {
+        [Column("room_id")]
+        public int RoomId { get; set; }
+
+        [Column("waiter_id")]
+        public int WaiterId { get; set; }
+
         public string Name { get; set; }
 
-        public int Floor { get; set; }
-
-        [Column("revert_at")]
-        public int revertAt { get; set; }
+        public RoomStatus Status { get; set; }
     }
 }

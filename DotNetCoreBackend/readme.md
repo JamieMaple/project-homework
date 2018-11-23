@@ -1,10 +1,10 @@
 # Task
 
-- [  ] mysql
+- [x] mysql
 - [x] GraphQL
 - [x] Token
-- [  ] waiter api
+- [x] waiter api
 - [  ] admin api
-- [  ] docker
+- [x] docker
 - [  ] redis
 

@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Security.Claims;
 using GraphQL;
 using GraphQL.Types;
 
@@ -16,17 +18,17 @@ namespace DotNetCoreBackend.GraphQLSchema
             FieldAsync<BooleanGraphType>(
                 "changeRoomStatus",
                 arguments: new QueryArguments(
-                    new QueryArgument<IntGraphType> { Name = "roomId" },
-                    new QueryArgument<RoomStatusEnum> { Name = "status" }
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "roomId" },
+                    new QueryArgument<NonNullGraphType<RoomStatusEnum>> { Name = "status" }
                 ),
                 resolve: async context =>
                 {
                     var roomId = context.GetArgument<int>("roomId");
                     var status = context.GetArgument<RoomStatus>("status");
 
-                    if (status <= 0) throw new ExecutionError("status error");
+                    var userId = UserHelpers.GetUserIdFromContext(context.UserContext);
 
-                    return await roomService.ChangeRoomStatus(roomId, status);
+                    return await roomService.ChangeRoomStatus(roomId, userId, status);
                 });
         }
     }

@@ -20,7 +20,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             Field<RoomQuery>("room", resolve: _ => new {});
 
-            Field<FoodQuery>("food", resolve: _ => new {});
+            Field<FoodQuery>("food", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);;
 
             Field<UserQuery>("user", resolve: _ => new {});
 

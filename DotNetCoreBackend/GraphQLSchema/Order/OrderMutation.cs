@@ -25,24 +25,10 @@ namespace DotNetCoreBackend.GraphQLSchema
                     new QueryArgument<NonNullGraphType<ListGraphType<FoodListItemInputType>>> { Name = "foodList" }
                 ),
                 resolve: context => {
-                    var userContext = context.UserContext as GraphQLUserContext;
-                    var claim = userContext.User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault();
-                    if (claim == null) throw new ExecutionError("cannot get right field from your token");
+                    int userId = UserHelpers.GetUserIdFromContext(context.UserContext);
 
                     var roomId = context.GetArgument<int>("roomId");
                     var foodList = context.GetArgument<List<FoodListItem>>("foodList");
-                    int userId = 0;
-
-                    if (foodList.Count <= 0) throw new ExecutionError("must have some foods");
-
-                    try
-                    {
-                        userId = Convert.ToInt32(claim.Value);
-                    }
-                    catch(Exception)
-                    {
-                        throw new ExecutionError("error token claims");
-                    }
 
                     orderService.DispatchNewOrder(roomId, userId, foodList);
 

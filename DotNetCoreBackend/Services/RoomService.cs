@@ -28,11 +28,13 @@ namespace DotNetCoreBackend.Services
             }
         }
 
-        public async Task<bool> ChangeRoomStatus(int roomId, RoomStatus status)
+        public async Task<bool> ChangeRoomStatus(int roomId, int userId, RoomStatus status)
         {
             try
             {
-                return await _roomRepository.ChangeRoomStatus(roomId, status);
+                var room = await _roomRepository.ChangeRoomStatus(roomId, status);
+                await _roomRepository.SaveRoomHistory(room, userId);
+                return true;
             }
             catch(Exception err)
             {
@@ -46,6 +48,6 @@ namespace DotNetCoreBackend.Services
     public interface IRoomService
     {
         Task<List<Room>> GetAllRooms();
-        Task<bool> ChangeRoomStatus(int roomId, RoomStatus status);
+        Task<bool> ChangeRoomStatus(int roomId, int userId, RoomStatus status);
     }
 }

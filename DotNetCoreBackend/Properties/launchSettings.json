@@ -1,6 +1,9 @@
 ﻿{
   "profiles": {
     "DotNetCoreBackend": {
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "commandName": "Project",
       "applicationUrl": "http://localhost:8081"
     }
