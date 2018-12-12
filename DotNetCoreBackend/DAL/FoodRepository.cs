@@ -51,6 +51,23 @@ namespace DotNetCoreBackend.DAL
         /*
          *  TODO: curd
          */
+        public async Task<bool> AddFood()
+        {
+            await Task.Delay(100);
+            return false;
+        }
+
+        public async Task<bool> UpdateFood()
+        {
+            await Task.Delay(100);
+            return false;
+        }
+
+        public async Task<bool> DeleteFood()
+        {
+            await Task.Delay(100);
+            return false;
+        }
     }
 
 
@@ -59,5 +76,7 @@ namespace DotNetCoreBackend.DAL
         Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit);
         Task<List<FoodListItem>> GetFoodBySomeFoodItem(List<FoodListItem> foodListItem);
         Task<List<Category>> GetAllCategories();
+        Task<bool> AddFood();
+        Task<bool> DeleteFood();
     }
 }
