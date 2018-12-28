@@ -18,7 +18,7 @@
     - ~~不出意外应该是 `react` 全家桶~~ (被前端打脸了)
     - `vue2`
 - 后端
-    - [  ] .NET + Mysql
+    - [  ] Spring + Mysql
     - [  ] GraphQL APi & Documentation
     - [  ] multiply images deployment
     - [  ] container & layer
