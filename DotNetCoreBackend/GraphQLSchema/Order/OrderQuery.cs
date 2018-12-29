@@ -13,8 +13,8 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "OrderQuery";
             Description = "订单模块，主要包含订单的查询";
 
-            FieldAsync<ListGraphType<RoomType>>(
-                "rooms",
+            FieldAsync<ListGraphType<OrderType>>(
+                "orders",
                 resolve: async _ => await orderService.GetOrderList(0, 100)
             );
         }

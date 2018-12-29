@@ -78,6 +78,6 @@ namespace DotNetCoreBackend.Services
     {
         Task<bool> DispatchNewOrder(int roomId, int waiterId, List<FoodListItem> foodItemList);
         Task<bool> DeleteOrderById(int id);
-        Task<bool> GetOrderList(int offset, int limit);
+        Task<List<Order>> GetOrderList(int offset, int limit);
     }
 }

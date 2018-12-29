@@ -98,6 +98,7 @@ namespace DotNetCoreBackend
                 app.UseGraphQLPlayground(new GraphQLPlaygroundOptions { Path = "/graphiql/playground", GraphQLEndPoint = entry });
 
                 // admin
+                app.UseGraphiQl("/admin/graphiql", adminEntry);
                 app.UseGraphQLPlayground(new GraphQLPlaygroundOptions { Path = "/admin/graphiql/playground", GraphQLEndPoint = adminEntry });
             }
             else

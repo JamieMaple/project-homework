@@ -26,10 +26,25 @@ namespace DotNetCoreBackend.Services
             _config = config;
         }
 
-        private string TokenBuild(int userId)
+        private string GetRole(UserType type)
+        {
+            switch (type)
+            {
+                case UserType.Root:
+                    return Role.RootRole;
+                case UserType.Admin:
+                    return Role.AdminRole;
+                case UserType.Waiter:
+                    return Role.WaiterRole;
+                default:
+                    return Role.Normal;
+            }
+        }
+
+        private string TokenBuild(int userId, UserType type)
         {
             var claims = new[] {
-                new Claim(ClaimTypes.Role, Role.WaiterRole),
+                new Claim(ClaimTypes.Role, GetRole(type)),
                 new Claim(ClaimTypes.PrimarySid, Convert.ToString(userId)),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -57,7 +72,7 @@ namespace DotNetCoreBackend.Services
 
             var hashedPassword = _userRepository.HashUserPasswordWithSalt(password, user.Salt);
 
-            return hashedPassword.Equals(user.Password) ? TokenBuild(user.Id) : "";
+            return hashedPassword.Equals(user.Password) ? TokenBuild(user.Id, user.Type) : "";
         }
 
         public Task<bool> NewWaiter(string username, string password)

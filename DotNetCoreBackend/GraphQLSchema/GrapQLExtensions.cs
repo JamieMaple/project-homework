@@ -28,9 +28,11 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<RoomQuery>();
             services.AddSingleton<RoomMutation>();
 
+            services.AddSingleton<FoodListItemInputType>();
+            services.AddSingleton<FoodListItemType>();
             services.AddSingleton<OrderType>();
             services.AddSingleton<OrderInputType>();
-            services.AddSingleton<FoodListItemInputType>();
+            services.AddSingleton<OrderQuery>();
             services.AddSingleton<OrderMutation>();
 
             services.AddSingleton<UserType>();
@@ -43,6 +45,7 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<BasicSchema>();
 
             services.AddSingleton<RootQuery>();
+            services.AddSingleton<RootMutation>();
             services.AddSingleton<RootSchema>();
         }
 

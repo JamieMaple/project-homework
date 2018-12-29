@@ -5,5 +5,6 @@ namespace DotNetCoreBackend.Security
         public static string WaiterRole = "waiter";
         public static string AdminRole = "admin";
         public static string RootRole = "root";
+        public static string Normal = "normal";
     }
 }
