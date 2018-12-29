@@ -41,6 +41,7 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
+                // TODO: delete to update deleteAt
                 await conn.DeleteAsync(new Order { Id = id });
                 return true;
             }

@@ -54,7 +54,7 @@ namespace DotNetCoreBackend.Services
             }
         }
 
-        public async Task<bool> DeleteFood(int id)
+        public async Task<bool> DeleteFoodById(int id)
         {
             try
             {
@@ -87,5 +87,8 @@ namespace DotNetCoreBackend.Services
     {
         Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit);
         Task<List<Category>> GetAllCategories();
+        Task<bool> AddFood(Food food);
+        Task<bool> DeleteFoodById(int foodId);
+        Task<bool> UpdateFood(Food food);
     }
 }

@@ -37,6 +37,17 @@ namespace DotNetCoreBackend.GraphQLSchema
 
                     return await userService.NewWaiter(user.Username, user.Password);
                 });
+
+            FieldAsync<BooleanGraphType>(
+                    "deleteUser",
+                    arguments: new QueryArguments(
+                        new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "userId" }
+                        ),
+                    resolve: async context =>
+                    {
+                        return false;
+                    }
+                    );
         }
     }
 }

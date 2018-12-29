@@ -86,6 +86,7 @@ namespace DotNetCoreBackend.Services
     public interface IRoomService
     {
         Task<List<Room>> GetAllRooms();
+        Task<bool> AddRoom(Room room);
         Task<bool> ChangeRoomStatus(int roomId, int userId, RoomStatus status);
         Task<bool> DeleteRoomById(int id);
         Task<bool> UpdateRoomInfo(Room room);

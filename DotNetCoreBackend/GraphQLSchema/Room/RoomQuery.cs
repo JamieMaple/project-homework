@@ -1,8 +1,6 @@
 using GraphQL.Types;
-using System.Collections.Generic;
 
 using DotNetCoreBackend.Services;
-using DotNetCoreBackend.DAL;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {

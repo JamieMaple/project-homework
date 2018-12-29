@@ -79,6 +79,10 @@ namespace DotNetCoreBackend.DAL
                 return result.FirstOrDefault();
             }
         }
+
+/*
+ * TODO: Delete user
+ */
     }
 
 

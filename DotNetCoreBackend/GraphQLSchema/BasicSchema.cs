@@ -18,11 +18,11 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "query";
             Description = "查询功能模块，除 user token 登陆外都需要权限";
 
-            Field<RoomQuery>("room", resolve: _ => new {});
+            Field<RoomQuery>("room", resolve: _ => new { });
 
-            Field<FoodQuery>("food", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);;
+            Field<FoodQuery>("food", resolve: _ => new { }).AuthorizeWith(Policy.WaiterPolicy); ;
 
-            Field<UserQuery>("user", resolve: _ => new {});
+            Field<UserQuery>("user", resolve: _ => new { });
 
         }
     }
@@ -34,16 +34,16 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "mutataion";
             Description = "修改模块";
 
-            Field<OrderMutation>("order", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
-            Field<RoomMutation>("room", resolve: _ => new {}).AuthorizeWith(Policy.WaiterPolicy);
-            Field<UserMutation>("user", resolve: _ => new {}).AuthorizeWith(Policy.AdminPolicy);
+            Field<OrderMutation>("order", resolve: _ => new { }).AuthorizeWith(Policy.WaiterPolicy);
+            Field<RoomMutation>("room", resolve: _ => new { }).AuthorizeWith(Policy.WaiterPolicy);
+            Field<UserMutation>("user", resolve: _ => new { }).AuthorizeWith(Policy.AdminPolicy);
         }
     }
 
 
     public class BasicSchema : Schema
     {
-        public BasicSchema(IDependencyResolver resolver): base(resolver)
+        public BasicSchema(IDependencyResolver resolver) : base(resolver)
         {
             Query = resolver.Resolve<BasicQuery>();
 

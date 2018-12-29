@@ -24,7 +24,8 @@ namespace DotNetCoreBackend.GraphQLSchema
                     new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "roomId" },
                     new QueryArgument<NonNullGraphType<ListGraphType<FoodListItemInputType>>> { Name = "foodList" }
                 ),
-                resolve: context => {
+                resolve: context =>
+                {
                     int userId = UserHelpers.GetUserIdFromContext(context.UserContext);
 
                     var roomId = context.GetArgument<int>("roomId");
@@ -33,6 +34,19 @@ namespace DotNetCoreBackend.GraphQLSchema
                     orderService.DispatchNewOrder(roomId, userId, foodList);
 
                     return true;
+                }
+            );
+
+            Field<BooleanGraphType>(
+                "deleteOrder",
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "orderId" }
+                ),
+                resolve: context =>
+                {
+                    var orderId = context.GetArgument<int>("orderId");
+
+                    return orderService.DeleteOrderById(orderId);
                 }
             );
         }

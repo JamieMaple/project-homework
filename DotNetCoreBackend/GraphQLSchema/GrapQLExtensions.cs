@@ -20,10 +20,12 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<CategoryType>();
 
             services.AddSingleton<FoodInputType>();
-            services.AddSingleton<FoodQuery>();
             services.AddSingleton<FoodType>();
+            services.AddSingleton<FoodQuery>();
+            services.AddSingleton<FoodMutation>();
 
             services.AddSingleton<RoomType>();
+            services.AddSingleton<RoomInputType>();
             services.AddSingleton<RoomStatusEnum>();
             services.AddSingleton<RoomQuery>();
             services.AddSingleton<RoomMutation>();
@@ -83,6 +85,6 @@ namespace DotNetCoreBackend.GraphQLSchema
 
     public static class GraphQLMiddlewareExtensions
     {
-       
+
     }
 }

@@ -43,6 +43,7 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
+                // TODO: delete to update deleteAt
                 await conn.DeleteAsync(new Room { Id = id });
             }
             return true;
