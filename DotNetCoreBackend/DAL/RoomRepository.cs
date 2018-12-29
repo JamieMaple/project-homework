@@ -11,6 +11,15 @@ namespace DotNetCoreBackend.DAL
     {
         public RoomRepository(IConfiguration config) : base(config) { }
 
+        public async Task<bool> AddRoom(Room room)
+        {
+            using (var conn = Connection)
+            {
+                await conn.InsertAsync(room);
+            }
+            return true;
+        }
+
         public async Task<List<Room>> GetAllRooms()
         {
             using (var conn = Connection)
@@ -21,42 +30,28 @@ namespace DotNetCoreBackend.DAL
             }
         }
 
-        /*
-         *  TODO: add a room
-         */
-        public bool AddRoom()
-        {
-            return false;
-        }
-
-        /*
-         *  TODO: delete a room
-         */
-        public bool DeleteRoomById()
-        {
-            return false;
-        }
-
-        /*
-         *  TODO: search for room
-         */
-        public List<Room> SearchRoom(int id)
-        {
-            return null;
-        }
-
-        public List<Room> SearchRoom(string name)
-        {
-            return null;
-        }
-
-        /*
-         *  TODO: change Room
-         */
-
-        public async Task<Room> ChangeRoomStatus(int roomId, RoomStatus status)
+        public async Task<bool> UpdateRoom(Room room)
         {
             using (var conn = Connection)
+            {
+                await conn.UpdateAsync(room);
+            }
+            return true;
+        }
+
+        public async Task<bool> DeleteRoomById(int id)
+        {
+            using (var conn = Connection)
+            {
+                await conn.DeleteAsync(new Room { Id = id });
+            }
+            return true;
+        }
+
+        public async Task<Room> ChangeRoomStatus(int roomId, RoomStatus status, int userId)
+        {
+            using (var conn = Connection)
+            using (var transaction = conn.BeginTransaction())
             {
                 conn.Open();
                 var room = await conn.GetAsync(new Room { Id = roomId });
@@ -65,17 +60,30 @@ namespace DotNetCoreBackend.DAL
                 room.LastUpdateAt = now;
                 room.Status = status;
 
-                // history
-                // var history = new RoomHisotry {  }
+                var roomHistory = NewRoomHistory(room, userId);
 
                 await conn.UpdateAsync(room);
+                await conn.InsertAsync(roomHistory);
+                transaction.Commit();
+
                 return room;
             }
         }
 
-        public async Task<RoomHistory> SaveRoomHistory(Room room, int userId)
+        public async Task<List<Room>> SearchRoom(string name)
         {
-            var roomHistory = new RoomHistory {
+            using (var conn = Connection)
+            {
+                var room = new Room { Name = name };
+                var result = await conn.FindAsync<Room>(s => s.Where($"{nameof(Room.Name):C}=@Name").WithParameters(room));
+                return result.ToList();
+            }
+        }
+
+        private async Task<RoomHistory> NewRoomHistory(Room room, int userId)
+        {
+            var roomHistory = new RoomHistory
+            {
                 RoomId = room.Id,
                 WaiterId = userId,
                 Name = room.Name,
@@ -94,8 +102,10 @@ namespace DotNetCoreBackend.DAL
 
     public interface IRoomRepository
     {
-        Task<List<Room>>GetAllRooms();
-        Task<Room> ChangeRoomStatus(int roomId, RoomStatus status);
-        Task<RoomHistory> SaveRoomHistory(Room room, int userId);
+        Task<List<Room>> GetAllRooms();
+        Task<bool> AddRoom(Room room);
+        Task<bool> DeleteRoomById(int id);
+        Task<Room> ChangeRoomStatus(int roomId, RoomStatus status, int userId);
+        Task<bool> UpdateRoom(Room room);
     }
 }

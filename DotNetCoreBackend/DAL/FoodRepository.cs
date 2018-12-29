@@ -26,8 +26,6 @@ namespace DotNetCoreBackend.DAL
             var foodList = new List<FoodListItem>();
             using (var conn = Connection)
             {
-                conn.Open();
-
                 foreach (var food in foodListItem)
                 {
                     var item = await conn.GetAsync(new FoodListItem { Id = food.Id });
@@ -48,25 +46,31 @@ namespace DotNetCoreBackend.DAL
                 return result.ToList();
             }
         }
-        /*
-         *  TODO: curd
-         */
-        public async Task<bool> AddFood()
+
+       public async Task<bool> AddFood(Food food)
         {
-            await Task.Delay(100);
-            return false;
+            using (var conn = Connection)
+            {
+                food.CreateAt = GetTime();
+                await conn.InsertAsync(food);
+            }
+            return true;
         }
 
-        public async Task<bool> UpdateFood()
+        public async Task<bool> UpdateFood(Food food)
         {
-            await Task.Delay(100);
-            return false;
+            using (var conn = Connection) {
+                await conn.UpdateAsync(food);
+            }
+            return true;
         }
 
-        public async Task<bool> DeleteFood()
+        public async Task<bool> DeleteFood(Food food)
         {
-            await Task.Delay(100);
-            return false;
+            using (var conn = Connection) {
+                await conn.DeleteAsync(food);
+            }
+            return true;
         }
     }
 
@@ -76,7 +80,8 @@ namespace DotNetCoreBackend.DAL
         Task<List<Food>> GetAllFoodWithOffsetAndLimit(int offset, int limit);
         Task<List<FoodListItem>> GetFoodBySomeFoodItem(List<FoodListItem> foodListItem);
         Task<List<Category>> GetAllCategories();
-        Task<bool> AddFood();
-        Task<bool> DeleteFood();
+        Task<bool> AddFood(Food food);
+        Task<bool> DeleteFood(Food food);
+        Task<bool> UpdateFood(Food food);
     }
 }

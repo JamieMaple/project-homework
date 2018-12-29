@@ -1,4 +1,7 @@
 using GraphQL.Types;
+using GraphQL.Authorization;
+
+using DotNetCoreBackend.Security;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
@@ -6,6 +9,9 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public RootMutation()
         {
+            Name = "管理员修改模块";
+            Description = "包含副作用，均需要 user token （特权级别：admin）";
+            this.AuthorizeWith(Policy.AdminPolicy);
         }
     }
 }

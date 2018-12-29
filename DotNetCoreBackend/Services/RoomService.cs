@@ -21,7 +21,7 @@ namespace DotNetCoreBackend.Services
             {
                 return await _roomRepository.GetAllRooms();
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Console.WriteLine(err);
                 return null;
@@ -32,11 +32,49 @@ namespace DotNetCoreBackend.Services
         {
             try
             {
-                var room = await _roomRepository.ChangeRoomStatus(roomId, status);
-                await _roomRepository.SaveRoomHistory(room, userId);
+                var room = await _roomRepository.ChangeRoomStatus(roomId, status, userId);
                 return true;
             }
-            catch(Exception err)
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<bool> AddRoom(Room room) 
+        {
+            try
+            {
+                return await _roomRepository.AddRoom(room);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateRoomInfo(Room room)
+        {
+            try
+            {
+                return await _roomRepository.UpdateRoom(room);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteRoomById(int id)
+        {
+            try
+            {
+                return await _roomRepository.DeleteRoomById(id);
+            }
+            catch (Exception err)
             {
                 Console.WriteLine(err);
                 return false;
@@ -49,5 +87,7 @@ namespace DotNetCoreBackend.Services
     {
         Task<List<Room>> GetAllRooms();
         Task<bool> ChangeRoomStatus(int roomId, int userId, RoomStatus status);
+        Task<bool> DeleteRoomById(int id);
+        Task<bool> UpdateRoomInfo(Room room);
     }
 }

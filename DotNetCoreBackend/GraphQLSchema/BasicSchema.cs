@@ -16,7 +16,7 @@ namespace DotNetCoreBackend.GraphQLSchema
         )
         {
             Name = "query";
-            Description = "查询模块";
+            Description = "查询功能模块，除 user token 登陆外都需要权限";
 
             Field<RoomQuery>("room", resolve: _ => new {});
 

@@ -40,6 +40,46 @@ namespace DotNetCoreBackend.Services
                 return null;
             }
         }
+
+        public async Task<bool> AddFood(Food food)
+        {
+            try
+            {
+                return await _foodRepository.AddFood(food);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteFood(int id)
+        {
+            try
+            {
+                var food = new Food { Id = id };
+                return await _foodRepository.DeleteFood(food);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateFood(Food food)
+        {
+            try
+            {
+                return await _foodRepository.UpdateFood(food);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
     }
 
 
@@ -49,4 +89,3 @@ namespace DotNetCoreBackend.Services
         Task<List<Category>> GetAllCategories();
     }
 }
-

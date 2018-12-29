@@ -22,10 +22,9 @@ namespace DotNetCoreBackend.Services
             try
             {
                 var foods = await _foodRepository.GetFoodBySomeFoodItem(foodItemList);
-                double sum = 0;
-                foods.ForEach(food => sum += food.UnitPrice * food.Count);
-
-                var order = new Order {
+                double sum = 0; foods.ForEach(food => sum += food.UnitPrice * food.Count); 
+                var order = new Order
+                {
                     RoomId = roomId,
                     WaiterId = waiterId,
                     FoodList = foods,
@@ -34,18 +33,51 @@ namespace DotNetCoreBackend.Services
                     CreateAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 };
                 await _orderRepository.DispatchOrder(order);
-            } catch(Exception err)
+            }
+            catch (Exception err)
             {
                 Console.WriteLine(err);
             }
 
             return true;
         }
+
+        public async Task<bool> DeleteOrderById(int id)
+        {
+            try
+            {
+                return await _orderRepository.DeleteOrderById(id);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
+        public async Task<List<Order>> GetOrderList(int offset, int limit)
+        {
+            try
+            {
+                return await _orderRepository.GetOrderList(offset, limit);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return null;
+            }
+        }
+
+        /*
+         * !!WARNING!!: NO UPDATE CODE FOR ORDER
+         */
     }
 
 
     public interface IOrderService
     {
         Task<bool> DispatchNewOrder(int roomId, int waiterId, List<FoodListItem> foodItemList);
+        Task<bool> DeleteOrderById(int id);
+        Task<bool> GetOrderList(int offset, int limit);
     }
 }

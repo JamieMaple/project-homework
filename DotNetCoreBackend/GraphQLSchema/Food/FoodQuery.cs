@@ -15,7 +15,8 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             FieldAsync<ListGraphType<FoodType>>("foods", resolve: async context =>
             {
-                return await foodService.GetAllFoodWithOffsetAndLimit(0, 120);
+                // 爬取数量过多, 限制数量
+                return await foodService.GetAllFoodWithOffsetAndLimit(0, 150);
             });
             FieldAsync<ListGraphType<CategoryType>>("categories", resolve: async context =>
             {

@@ -12,13 +12,10 @@ namespace DotNetCoreBackend.DAL
     {
         public UserRepository(IConfiguration config) : base(config) { }
 
-        /*
-         *  curd
-         */
         public async Task<bool> NewUser(string username, string password, UserType usertype)
         {
             Tuple<string, string> pair = HashUserPassword(password);
-            // password hask & salt
+
             var newUser = new LoginUser
             {
                 Username = username,
@@ -27,6 +24,7 @@ namespace DotNetCoreBackend.DAL
                 Type = usertype,
                 CreateAt = GetTime()
             };
+
             using (var conn = Connection)
             {
                 conn.Open();
@@ -37,6 +35,7 @@ namespace DotNetCoreBackend.DAL
                 }
                 await conn.InsertAsync(newUser);
             }
+
             return true;
         }
 
