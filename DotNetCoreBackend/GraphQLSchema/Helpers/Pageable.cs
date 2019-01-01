@@ -2,6 +2,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 {
     public class Pageable {
         public int Limit;
+
         public int Offset;
 
         public static Pageable defaultPageable ()

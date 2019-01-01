@@ -65,10 +65,11 @@ namespace DotNetCoreBackend.DAL
             return true;
         }
 
-        public async Task<bool> DeleteFood(Food food)
+        public async Task<bool> DeleteFoodById(int foodId)
         {
             using (var conn = Connection) {
-                await conn.DeleteAsync(food);
+                // TODO: use update deleteAt instead
+                await conn.UpdateAsync(new Food { Id = foodId, DeleteAt = GetTime() });
             }
             return true;
         }
@@ -81,7 +82,7 @@ namespace DotNetCoreBackend.DAL
         Task<List<FoodListItem>> GetFoodBySomeFoodItem(List<FoodListItem> foodListItem);
         Task<List<Category>> GetAllCategories();
         Task<bool> AddFood(Food food);
-        Task<bool> DeleteFood(Food food);
+        Task<bool> DeleteFoodById(int foodId);
         Task<bool> UpdateFood(Food food);
     }
 }
