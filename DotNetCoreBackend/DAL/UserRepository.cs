@@ -45,6 +45,7 @@ namespace DotNetCoreBackend.DAL
         private Tuple<string, string> HashUserPassword(string password)
         {
             byte[] salt = new byte[128 / 8];
+
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
@@ -128,8 +129,7 @@ namespace DotNetCoreBackend.DAL
         
         public async Task<List<User>> GetUserList(int offset, int limit)
         {
-            var users = await GetList<User>(offset, limit);
-            return users.ToList();
+            return await GetList<User>(offset, limit);
         }
     }
 

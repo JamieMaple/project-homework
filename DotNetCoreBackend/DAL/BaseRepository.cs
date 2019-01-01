@@ -56,7 +56,7 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
-                var sql = string.Format("UPDATE {0} set delete_at={1} where id={2}", tableName, GetTime(), id);
+                var sql = string.Format("UPDATE `{0}` set delete_at={1} where id={2}", tableName, GetTime(), id);
                 return await conn.ExecuteAsync(sql) >= 1;
             }
         }
@@ -74,14 +74,6 @@ namespace DotNetCoreBackend.DAL
 
     public static class BaseRepositoryExtension
     {
-        /// <summary>
-        /// Updates table T with the values in param.
-        /// The table must have a key named "Id" and the value of id must be included in the "param" anon object. The Id value is used as the "where" clause in the generated SQL
-        /// </summary>
-        /// <typeparam name="T">Type to update. Translates to table name</typeparam>
-        /// <param name="connection"></param>
-        /// <param name="param">An anonymous object with key=value types</param>
-        /// <returns>The Id of the updated row. If no row was updated or id was not part of fields, returns null</returns>
         public static object UpdateFields<T>(this IDbConnection connection, object param, IDbTransaction transaction = null, int? commandTimeOut = null, CommandType? commandType = null)
         {
             var names = new List<string>();
@@ -107,7 +99,6 @@ namespace DotNetCoreBackend.DAL
                 if (Debugger.IsAttached)
                     Trace.WriteLine(string.Format("UpdateFields: {0}", sql));
                 return connection.Execute(sql, param, transaction, commandTimeOut, commandType) > 0 ? id : null;
-                return null;
             }
             return null;
         }

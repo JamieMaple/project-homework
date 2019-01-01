@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
@@ -16,9 +14,13 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
+                room.CreateAt = room.LastUpdateAt = GetTime();
+                room.Status = RoomStatus.Idle;
+
                 await conn.InsertAsync(room);
+
+                return true;
             }
-            return true;
         }
 
         public async Task<List<Room>> GetAllRooms(int offset, int limit)
@@ -43,7 +45,7 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
-                return await Delete(id, "rooom");
+                return await Delete(id, "room");
             }
         }
 

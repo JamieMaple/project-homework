@@ -32,14 +32,13 @@ namespace DotNetCoreBackend.Services
                     TotalPrice = sum,
                     CreateAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 };
-                await _orderRepository.DispatchOrder(order);
+                return await _orderRepository.DispatchOrder(order);
             }
             catch (Exception err)
             {
                 Console.WriteLine(err);
+                return false;
             }
-
-            return true;
         }
 
         public async Task<bool> DeleteOrderById(int id)
@@ -68,6 +67,19 @@ namespace DotNetCoreBackend.Services
             }
         }
 
+        public async Task<bool> ChangeOrderStatus(int orderId, OrderStatus status)
+        {
+            try
+            {
+                return await _orderRepository.ChangeOrderStatus(orderId, status);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
         /*
          * !!WARNING!!: NO UPDATE CODE FOR ORDER
          */
@@ -79,5 +91,6 @@ namespace DotNetCoreBackend.Services
         Task<bool> DispatchNewOrder(int roomId, int waiterId, List<FoodListItem> foodItemList);
         Task<bool> DeleteOrderById(int id);
         Task<List<Order>> GetOrderList(int offset, int limit);
+        Task<bool> ChangeOrderStatus(int orderId, OrderStatus status);
     }
 }

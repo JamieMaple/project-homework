@@ -1,7 +1,7 @@
-using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Dapper;
 using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
@@ -23,11 +23,30 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
-                var result = await conn.FindAsync<Order>(s => s.Skip(offset).Top(limit));
-                return result.ToList();
+                return await GetList<Order>(offset, limit);
             }
         }
 
+        public async Task<bool> ChangeOrderStatus(int orderId, OrderStatus status)
+        {
+            using (var conn = Connection)
+            {
+                long time = 0;
+                if (status == OrderStatus.Finished)
+                {
+                    time = GetTime();
+                }
+
+                var sql = @"UPDATE `order` SET status=@Status, finish_at=@Time Where id=@Id";
+                await conn.ExecuteAsync(sql, new { Id=orderId, Status=status, Time=time });
+
+                return true;
+            }
+        }
+
+/*
+ * !!!!despired
+ */
         public async Task<bool> ChangeOrder(Order order)
         {
             using (var conn = Connection)
@@ -61,5 +80,6 @@ namespace DotNetCoreBackend.DAL
         Task<bool> DeleteOrderById(int id);
         Task<bool> UpdateOrder(Order order);
         Task<List<Order>> GetOrderList(int offset, int limit);
+        Task<bool> ChangeOrderStatus(int orderId, OrderStatus status);
     }
 }
