@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Types;
 
@@ -38,16 +39,42 @@ namespace DotNetCoreBackend.GraphQLSchema
                     return await userService.NewWaiter(user.Username, user.Password);
                 });
 
+            FieldAsync<BooleanGraphType>( 
+                "changeUserPassword",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<UserInputType>> { Name = "user" }
+                    ),
+                resolve: async context =>
+                {
+                    var user = context.GetArgument<LoginUser>("user");
+
+                    if (user == null || user.Username == null || user.Password == null)
+                    {
+                        throw new ExecutionError("bad username or password input");
+                    }
+
+                    string username = user.Username.Trim();
+                    string password = user.Password.Trim();
+
+                    if (username == "" || password == "")
+                    {
+                        throw new ExecutionError("bad username or password input");
+                    }
+
+                    return await userService.ChangeUserPassword(username, password);
+                });
+
             FieldAsync<BooleanGraphType>(
                     "deleteUser",
                     arguments: new QueryArguments(
-                        new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "userId" }
+                        new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "deleteId" }
                         ),
                     resolve: async context =>
                     {
-                        return false;
-                    }
-                    );
+                        var userId = UserHelpers.GetUserIdFromContext(context.UserContext);
+                        var deleteId = context.GetArgument<int>("deleteId");
+                        return await userService.DeleteUser(userId, deleteId);
+                    });
         }
     }
 }

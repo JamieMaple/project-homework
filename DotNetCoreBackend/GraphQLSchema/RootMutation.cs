@@ -19,7 +19,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             Field<FoodMutation>("food", resolve: _ => new { });
 
-            Field<OrderMutation>("order", resolve: _ => new { });
+            // Field<OrderMutation>("order", resolve: _ => new { });
         }
     }
 }

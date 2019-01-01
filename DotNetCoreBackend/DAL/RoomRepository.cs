@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Dapper;
 using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
@@ -20,13 +21,12 @@ namespace DotNetCoreBackend.DAL
             return true;
         }
 
-        public async Task<List<Room>> GetAllRooms()
+        public async Task<List<Room>> GetAllRooms(int offset, int limit)
         {
             using (var conn = Connection)
             {
                 conn.Open();
-                var rooms = await conn.FindAsync<Room>();
-                return rooms.ToList();
+                return await GetList<Room>(offset, limit);
             }
         }
 
@@ -34,19 +34,17 @@ namespace DotNetCoreBackend.DAL
         {
             using (var conn = Connection)
             {
-                await conn.UpdateAsync(room);
+                var sql = @"UPDATE room SET name=@Name, floor=@Floor, status=@Status WHERE id=@Id";
+                return await conn.ExecuteAsync(sql, room) > 0;
             }
-            return true;
         }
 
         public async Task<bool> DeleteRoomById(int id)
         {
             using (var conn = Connection)
             {
-                // TODO: delete to update deleteAt
-                await conn.DeleteAsync(new Room { Id = id });
+                return await Delete(id, "rooom");
             }
-            return true;
         }
 
         public async Task<Room> ChangeRoomStatus(int roomId, RoomStatus status, int userId)
@@ -56,9 +54,8 @@ namespace DotNetCoreBackend.DAL
             {
                 conn.Open();
                 var room = await conn.GetAsync(new Room { Id = roomId });
-                var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-                room.LastUpdateAt = now;
+                room.LastUpdateAt = GetTime();
                 room.Status = status;
 
                 var roomHistory = NewRoomHistory(room, userId);
@@ -71,16 +68,6 @@ namespace DotNetCoreBackend.DAL
             }
         }
 
-        public async Task<List<Room>> SearchRoom(string name)
-        {
-            using (var conn = Connection)
-            {
-                var room = new Room { Name = name };
-                var result = await conn.FindAsync<Room>(s => s.Where($"{nameof(Room.Name):C}=@Name").WithParameters(room));
-                return result.ToList();
-            }
-        }
-
         private async Task<RoomHistory> NewRoomHistory(Room room, int userId)
         {
             var roomHistory = new RoomHistory
@@ -89,7 +76,7 @@ namespace DotNetCoreBackend.DAL
                 WaiterId = userId,
                 Name = room.Name,
                 Status = room.Status,
-                CreateAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                CreateAt = GetTime(),
             };
             using (var conn = Connection)
             {
@@ -103,7 +90,7 @@ namespace DotNetCoreBackend.DAL
 
     public interface IRoomRepository
     {
-        Task<List<Room>> GetAllRooms();
+        Task<List<Room>> GetAllRooms(int offset, int limit);
         Task<bool> AddRoom(Room room);
         Task<bool> DeleteRoomById(int id);
         Task<Room> ChangeRoomStatus(int roomId, RoomStatus status, int userId);

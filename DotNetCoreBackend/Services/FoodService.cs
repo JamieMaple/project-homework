@@ -58,8 +58,7 @@ namespace DotNetCoreBackend.Services
         {
             try
             {
-                var food = new Food { Id = id };
-                return await _foodRepository.DeleteFood(food);
+                return await _foodRepository.DeleteFoodById(id);
             }
             catch (Exception err)
             {

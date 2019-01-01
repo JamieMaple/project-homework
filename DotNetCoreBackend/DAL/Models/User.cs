@@ -16,8 +16,6 @@ namespace DotNetCoreBackend.DAL
     {
         public string Username { get; set; }
 
-        // input password not in db
-
         public UserType Type { get; set; }
 
         [Column("last_login_at")]

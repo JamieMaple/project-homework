@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Dapper;
 using Dapper.FastCrud;
 
 namespace DotNetCoreBackend.DAL
@@ -15,8 +16,7 @@ namespace DotNetCoreBackend.DAL
             using (var conn = Connection)
             {
                 conn.Open();
-                var result = await conn.FindAsync<Food>(s => s.Skip(offset).Top(limit));
-                return result.ToList();
+                return await GetList<Food>(offset, limit);
             }
         }
 
@@ -32,9 +32,8 @@ namespace DotNetCoreBackend.DAL
                     item.Count = food.Count;
                     foodList.Add(item);
                 }
+                return foodList.ToList();
             }
-
-            return foodList.ToList();
         }
 
         public async Task<List<Category>> GetAllCategories()
@@ -47,31 +46,31 @@ namespace DotNetCoreBackend.DAL
             }
         }
 
-       public async Task<bool> AddFood(Food food)
+        public async Task<bool> AddFood(Food food)
         {
             using (var conn = Connection)
             {
                 food.CreateAt = GetTime();
                 await conn.InsertAsync(food);
+                return true;
             }
-            return true;
         }
 
         public async Task<bool> UpdateFood(Food food)
         {
-            using (var conn = Connection) {
-                await conn.UpdateAsync(food);
+            using (var conn = Connection)
+            {
+                var sql = @"UPDATE food SET name=@Name, unit_price=@UnitPrice, category=@CategoryId, img_url=@Image WHERE id=@Id";
+                return await conn.ExecuteAsync(sql, food) > 0;
             }
-            return true;
         }
 
         public async Task<bool> DeleteFoodById(int foodId)
         {
-            using (var conn = Connection) {
-                // TODO: use update deleteAt instead
-                await conn.UpdateAsync(new Food { Id = foodId, DeleteAt = GetTime() });
+            using (var conn = Connection)
+            {
+                return await Delete(foodId, "food");
             }
-            return true;
         }
     }
 

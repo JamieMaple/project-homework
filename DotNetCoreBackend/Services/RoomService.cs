@@ -15,11 +15,11 @@ namespace DotNetCoreBackend.Services
             _roomRepository = repository;
         }
 
-        public async Task<List<Room>> GetAllRooms()
+        public async Task<List<Room>> GetAllRooms(int offset, int limit)
         {
             try
             {
-                return await _roomRepository.GetAllRooms();
+                return await _roomRepository.GetAllRooms(offset, limit);
             }
             catch (Exception err)
             {
@@ -85,7 +85,7 @@ namespace DotNetCoreBackend.Services
 
     public interface IRoomService
     {
-        Task<List<Room>> GetAllRooms();
+        Task<List<Room>> GetAllRooms(int offset, int limit);
         Task<bool> AddRoom(Room room);
         Task<bool> ChangeRoomStatus(int roomId, int userId, RoomStatus status);
         Task<bool> DeleteRoomById(int id);

@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Security.Claims;
-using GraphQL;
 using GraphQL.Types;
 
 using DotNetCoreBackend.Services;
@@ -38,7 +35,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                 resolve: async context =>
                 {
                     var roomId = context.GetArgument<int>("roomId");
-                    return roomService.DeleteRoomById(roomId);
+                    return await roomService.DeleteRoomById(roomId);
                 }
             );
 
@@ -49,8 +46,8 @@ namespace DotNetCoreBackend.GraphQLSchema
                         ),
                 resolve: async context =>
                 {
-                    var newRoom = context.GetArgument<Room>("room");
-                    return false;
+                    var room = context.GetArgument<Room>("room");
+                    return await roomService.AddRoom(room);
                 }
             );
 
@@ -63,7 +60,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                 {
                     var room = context.GetArgument<Room>("room");
 
-                    return roomService.UpdateRoomInfo(room);
+                    return await roomService.UpdateRoomInfo(room);
                 }
             );
         }

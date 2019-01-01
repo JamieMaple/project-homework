@@ -13,7 +13,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             FieldAsync<ListGraphType<RoomType>>(
                 "rooms",
-                resolve: async _ => await roomService.GetAllRooms()
+                resolve: async _ => await roomService.GetAllRooms(0, 100)
             );
         }
     }

@@ -8,7 +8,6 @@ namespace DotNetCoreBackend.GraphQLSchema
     {
         public UserInputType()
         {
-            Name = "UserInput";
             Field(x => x.Username);
             Field(x => x.Password);
         }

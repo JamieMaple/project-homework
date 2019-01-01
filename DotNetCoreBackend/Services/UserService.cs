@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
@@ -84,6 +85,21 @@ namespace DotNetCoreBackend.Services
         {
             return _userRepository.NewUser(username, password, UserType.Admin);
         }
+
+        public Task<List<User>> GetUserList(int offset, int limit)
+        {
+            return _userRepository.GetUserList(offset, limit);
+        }
+
+        public Task<bool> ChangeUserPassword(string username, string password)
+        {
+            return _userRepository.ChangeUserPassword(username, password);
+        }
+
+        public Task<bool> DeleteUser(int user, int deleteUser)
+        {
+            return _userRepository.DeleteUser(user, deleteUser);
+        }
     }
 
 
@@ -92,5 +108,11 @@ namespace DotNetCoreBackend.Services
         Task<string> Authentication(string name, string password);
 
         Task<bool> NewWaiter(string username, string password);
+
+        Task<List<User>> GetUserList(int offset, int limit);
+
+        Task<bool> DeleteUser(int operatingUser, int deleteUser);
+
+        Task<bool> ChangeUserPassword(string username, string password);
     }
 }

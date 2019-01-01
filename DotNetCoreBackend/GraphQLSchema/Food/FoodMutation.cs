@@ -21,20 +21,22 @@ namespace DotNetCoreBackend.GraphQLSchema
                 {
                     var food = context.GetArgument<Food>("food");
 
-                    return foodService.AddFood(food);
+                    return await foodService.AddFood(food);
                 }
             );
 
             FieldAsync<BooleanGraphType>(
                 "updateFood",
                 arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "foodId" },
                     new QueryArgument<NonNullGraphType<FoodInputType>> { Name = "food" }
                 ),
                 resolve: async context =>
                 {
                     var food = context.GetArgument<Food>("food");
+                    food.Id = context.GetArgument<int>("foodId");
 
-                    return foodService.UpdateFood(food);
+                    return await foodService.UpdateFood(food);
                 }
             );
 
@@ -47,7 +49,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                 {
                     var foodId = context.GetArgument<int>("foodId");
 
-                    return foodService.DeleteFoodById(foodId);
+                    return await foodService.DeleteFoodById(foodId);
                 }
             );
         }

@@ -27,7 +27,18 @@ namespace DotNetCoreBackend.GraphQLSchema
                         throw new ExecutionError("bad username or password input");
                     }
 
-                    return await userService.Authentication(user.Username, user.Password);
+                    var token = await userService.Authentication(user.Username, user.Password);
+                    if (token == "")
+                    {
+                        throw new ExecutionError("username or password error.");
+                    }
+                    return token;
+                });
+            FieldAsync<ListGraphType<DotNetCoreBackend.GraphQLSchema.UserType>>(
+                "getUserList",
+                resolve: async context =>
+                {
+                    return await userService.GetUserList(0, 100);
                 });
         }
     }

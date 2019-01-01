@@ -37,6 +37,7 @@ namespace DotNetCoreBackend.GraphQLSchema
             services.AddSingleton<OrderQuery>();
             services.AddSingleton<OrderMutation>();
 
+            services.AddSingleton<UserTypeEnum>();
             services.AddSingleton<UserType>();
             services.AddSingleton<UserInputType>();
             services.AddSingleton<UserQuery>();
@@ -62,8 +63,8 @@ namespace DotNetCoreBackend.GraphQLSchema
             {
                 var authSettings = new AuthorizationSettings();
 
-                authSettings.AddPolicy(Policy.WaiterPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.WaiterRole));
-                authSettings.AddPolicy(Policy.AdminPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.AdminRole));
+                authSettings.AddPolicy(Policy.WaiterPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.WaiterRole, Role.AdminRole, Role.RootRole));
+                authSettings.AddPolicy(Policy.AdminPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.AdminRole, Role.RootRole));
                 authSettings.AddPolicy(Policy.RootPolicy, p => p.RequireClaim(ClaimTypes.Role, Role.RootRole));
 
                 return authSettings;
