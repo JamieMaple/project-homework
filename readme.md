@@ -6,11 +6,9 @@
 
 ### How to run it
 
-1. `clone this repo && cd to the backend project path`
+1. install gradle & java 10 as need
 
-1. `dotnet restore` (`dotnet core` required)
-
-1. `dotnet run`
+1. gradle tasks run
 
 ### 技术上的设计
 
