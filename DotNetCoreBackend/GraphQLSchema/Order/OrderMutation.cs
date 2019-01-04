@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using GraphQL.Types;
+using GraphQL.Authorization;
 
 using DotNetCoreBackend.DAL;
 using DotNetCoreBackend.Services;
+using DotNetCoreBackend.Security;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
@@ -12,7 +14,6 @@ namespace DotNetCoreBackend.GraphQLSchema
         {
             Name = "OrderMutation";
             Description = "这里主要包含了添加订单等功能";
-
 
             FieldAsync<BooleanGraphType>(
                 "createOrder",
@@ -29,7 +30,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
                     return await orderService.DispatchNewOrder(roomId, userId, foodList);
                 }
-            );
+            ).AuthorizeWith(Policy.WaiterPolicy);
 
             // 订单原子操作，不开放修改接口，但可以更改订单状态
             FieldAsync<BooleanGraphType>(
@@ -43,7 +44,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                     var orderId = context.GetArgument<int>("orderId");
                     var status = context.GetArgument<OrderStatus>("status");
                     return await orderService.ChangeOrderStatus(orderId, status);
-                });
+                }).AuthorizeWith(Policy.AdminPolicy);
 
             FieldAsync<BooleanGraphType>(
                 "deleteOrder",
@@ -56,7 +57,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
                     return await orderService.DeleteOrderById(orderId);
                 }
-            );
+            ).AuthorizeWith(Policy.AdminPolicy);
         }
     }
 }

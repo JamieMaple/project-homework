@@ -1,7 +1,9 @@
 using GraphQL.Types;
+using GraphQL.Authorization;
 
 using DotNetCoreBackend.Services;
 using DotNetCoreBackend.DAL;
+using DotNetCoreBackend.Security;
 
 namespace DotNetCoreBackend.GraphQLSchema
 {
@@ -25,7 +27,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                     var userId = UserHelpers.GetUserIdFromContext(context.UserContext);
 
                     return await roomService.ChangeRoomStatus(roomId, userId, status);
-                });
+                }).AuthorizeWith(Policy.WaiterPolicy);
 
             FieldAsync<BooleanGraphType>(
                 "deleteRoom",
@@ -37,7 +39,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                     var roomId = context.GetArgument<int>("roomId");
                     return await roomService.DeleteRoomById(roomId);
                 }
-            );
+            ).AuthorizeWith(Policy.AdminPolicy);
 
             FieldAsync<BooleanGraphType>(
                     "createRoom",
@@ -49,7 +51,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                     var room = context.GetArgument<Room>("room");
                     return await roomService.AddRoom(room);
                 }
-            );
+            ).AuthorizeWith(Policy.AdminPolicy);
 
             FieldAsync<BooleanGraphType>(
                 "updateRoom",
@@ -62,7 +64,7 @@ namespace DotNetCoreBackend.GraphQLSchema
 
                     return await roomService.UpdateRoomInfo(room);
                 }
-            );
+            ).AuthorizeWith(Policy.AdminPolicy);
         }
     }
 }

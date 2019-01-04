@@ -13,7 +13,15 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             FieldAsync<ListGraphType<RoomType>>(
                 "rooms",
-                resolve: async _ => await roomService.GetAllRooms(0, 100)
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "limit" },
+                    new QueryArgument<IntGraphType> { Name = "offset" }
+                ),
+                resolve: async context =>
+                {
+                    var page = new Pageable(context, 120);
+                    return await roomService.GetAllRooms(page.Offset, page.Limit);
+                }
             );
         }
     }

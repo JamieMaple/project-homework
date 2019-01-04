@@ -36,9 +36,14 @@ namespace DotNetCoreBackend.GraphQLSchema
                 });
             FieldAsync<ListGraphType<DotNetCoreBackend.GraphQLSchema.UserType>>(
                 "getUserList",
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "limit" },
+                    new QueryArgument<IntGraphType> { Name = "offset" }
+                    ),
                 resolve: async context =>
                 {
-                    return await userService.GetUserList(0, 100);
+                    var page = new Pageable(context);
+                    return await userService.GetUserList(page.Offset, page.Limit);
                 });
         }
     }

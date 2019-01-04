@@ -13,11 +13,19 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "FoodQuery";
             Description = "这里包含了有菜单";
 
-            FieldAsync<ListGraphType<FoodType>>("foods", resolve: async context =>
+            FieldAsync<ListGraphType<FoodType>>(
+                "foods",
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "limit" },
+                    new QueryArgument<IntGraphType> { Name = "offset" }
+                    ),
+                resolve: async context =>
             {
-                // 爬取数量过多, 限制数量
-                return await foodService.GetAllFoodWithOffsetAndLimit(0, 150);
+                var page = new Pageable(context, 120);
+
+                return await foodService.GetAllFoodWithOffsetAndLimit(page.Offset, page.Limit);
             });
+
             FieldAsync<ListGraphType<CategoryType>>("categories", resolve: async context =>
             {
                 return await foodService.GetAllCategories();

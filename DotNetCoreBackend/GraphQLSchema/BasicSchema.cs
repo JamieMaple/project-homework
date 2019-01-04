@@ -34,9 +34,9 @@ namespace DotNetCoreBackend.GraphQLSchema
             Name = "mutataion";
             Description = "修改模块";
 
-            Field<OrderMutation>("order", resolve: _ => new { }).AuthorizeWith(Policy.WaiterPolicy);
-            Field<RoomMutation>("room", resolve: _ => new { }).AuthorizeWith(Policy.WaiterPolicy);
-            Field<UserMutation>("user", resolve: _ => new { }).AuthorizeWith(Policy.AdminPolicy);
+            Field<OrderMutation>("order", resolve: _ => new { });
+            Field<RoomMutation>("room", resolve: _ => new { });
+            // Field<UserMutation>("user", resolve: _ => new { }).AuthorizeWith(Policy.AdminPolicy);
         }
     }
 

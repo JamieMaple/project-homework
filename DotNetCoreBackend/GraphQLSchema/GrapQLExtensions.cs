@@ -19,6 +19,8 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             services.AddSingleton<CategoryType>();
 
+            services.AddSingleton<PageableInputType>();
+
             services.AddSingleton<FoodInputType>();
             services.AddSingleton<FoodType>();
             services.AddSingleton<FoodQuery>();

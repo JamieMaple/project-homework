@@ -15,7 +15,15 @@ namespace DotNetCoreBackend.GraphQLSchema
 
             FieldAsync<ListGraphType<OrderType>>(
                 "orders",
-                resolve: async _ => await orderService.GetOrderList(0, 100)
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "limit" },
+                    new QueryArgument<IntGraphType> { Name = "offset" }
+                    ),
+                resolve: async context =>
+                {
+                    var page = new Pageable(context);
+                    return await orderService.GetOrderList(page.Offset, page.Limit);
+                }
             );
         }
     }
