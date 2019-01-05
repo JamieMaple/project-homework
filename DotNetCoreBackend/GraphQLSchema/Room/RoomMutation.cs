@@ -56,11 +56,14 @@ namespace DotNetCoreBackend.GraphQLSchema
             FieldAsync<BooleanGraphType>(
                 "updateRoom",
                 arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "roomId" },
                     new QueryArgument<NonNullGraphType<RoomInputType>> { Name = "room" }
                     ),
                 resolve: async context =>
                 {
                     var room = context.GetArgument<Room>("room");
+                    var roomId = context.GetArgument<int>("roomId");
+                    room.Id = roomId;
 
                     return await roomService.UpdateRoomInfo(room);
                 }
