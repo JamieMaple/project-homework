@@ -1,4 +1,4 @@
-package com.maple.Models;
+package com.maple.model;
 
 
 import javax.persistence.GeneratedValue;

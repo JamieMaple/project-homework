@@ -1,4 +1,4 @@
-package com.maple.Models;
+package com.maple.model;
 
 public class Food extends Base {
     public String name;

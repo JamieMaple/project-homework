@@ -1,0 +1,158 @@
+
+type RootMutation {
+    food: foodMutation
+    order: OrderMutation
+    room: RoomMutation
+    user: UserMutation
+}
+
+type CategoryType {
+    id: Int!
+    name: String!
+}
+
+scalar Date
+
+scalar DateTime
+
+scalar DateTimeOffset
+
+scalar Decimal
+
+type Food {
+    categoryId: Int!
+    id: Int!
+    image: String!
+    name: String!
+    unitPrice: Float!
+}
+
+input FoodInputType {
+    name: String!
+    unitPrice: Float!
+    image: String!
+    categoryId: Int!
+}
+
+input FoodListItemInputType {
+    id: Int = null
+    count: Int = null
+}
+
+type FoodListItemType {
+    count: Int
+    id: Int
+    name: String
+    unitPrice: Float
+}
+
+type foodMutation {
+    createFood(food: FoodInputType!): Boolean
+    deleteFood(foodId: Int = null): Boolean
+    updateFood(foodId: Int!, food: FoodInputType!): Boolean
+}
+
+type FoodQuery {
+    categories: [CategoryType]
+    foods(limit: Int = null, offset: Int = null): [Food]
+}
+
+scalar Milliseconds
+
+type OrderMutation {
+    changeOrderStatus(orderId: Int!, status: OrderStatus!): Boolean
+    createOrder(roomId: Int!, foodList: [FoodListItemInputType]!): Boolean
+    deleteOrder(orderId: Int = null): Boolean
+}
+
+type OrderQuery {
+    orders(limit: Int = null, offset: Int = null): [OrderType]
+}
+
+enum OrderStatus {
+    CREATED
+    PENDING
+    FINISHED
+}
+
+type OrderType {
+    createAt: Int!
+    finishAt: Int!
+    foodList: [FoodListItemType]
+    id: Int!
+    roomId: Int!
+    status: OrderStatus
+    totalPrice: Float!
+    waiterId: Int!
+}
+
+type room {
+    floor: Int!
+    id: Int!
+    name: String!
+    status: RoomStatus
+}
+
+input RoomInputType {
+    floor: Int!
+    name: String!
+}
+
+type RoomMutation {
+    changeRoomStatus(roomId: Int!, status: RoomStatus!): Boolean
+    createRoom(room: RoomInputType!): Boolean
+    deleteRoom(roomId: Int!): Boolean
+    updateRoom(room: RoomInputType!): Boolean
+}
+
+type RoomQuery {
+    rooms(limit: Int = null, offset: Int = null): [room]
+}
+
+enum RoomStatus {
+    IDLE
+    BUSY
+}
+
+type RootQuery {
+    food: FoodQuery
+    order: OrderQuery
+    room: RoomQuery
+    user: UserQuery
+}
+
+scalar Seconds
+
+input UserInputType {
+    username: String!
+    password: String!
+}
+
+type UserListItemType {
+    id: Int!
+    type: UserType
+    username: String!
+}
+
+type UserMutation {
+    changeUserPassword(user: UserInputType!): Boolean
+    deleteUser(deleteId: Int!): Boolean
+    newWaiter(user: UserInputType!): Boolean
+}
+
+type UserQuery {
+    getUserList(limit: Int = null, offset: Int = null): [UserListItemType]
+    token(user: UserInputType!): String
+}
+
+enum UserType {
+    NORMAL
+    WAITER
+    ADMIN
+    ROOT
+}
+
+schema {
+    query: RootQuery
+    mutation: RootMutation
+}
