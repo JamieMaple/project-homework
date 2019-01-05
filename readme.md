@@ -1,4 +1,4 @@
-# c# 代码，某酒店后台
+# Java 代码，某酒店后台
 
 ### 代码版本
 
@@ -8,17 +8,19 @@
 
 1. install gradle & java 10 as need
 
-1. gradle tasks run
+1. use gradle run to install dep and then just run
 
 ### 技术上的设计
 
 - 前端
     - ~~不出意外应该是 `react` 全家桶~~ (被前端打脸了)
     - `vue2`
+    - `bootstrap` + `jq` + `ng1`
 - 后端
-    - [  ] Spring + Mysql
-    - [  ] GraphQL APi & Documentation
-    - [  ] multiply images deployment
-    - [  ] container & layer
-    - [  ] distributed system
+    - [x] Java with spring
+    - [x] Mysql
+    - [x] GraphQL APi & Documentation
+    - [x] multiply images deployment
+    - [x] container & layer
+    - [x] distributed system
 
