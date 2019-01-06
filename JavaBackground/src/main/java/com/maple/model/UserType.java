@@ -15,4 +15,17 @@ public enum UserType {
     public int getValue() {
         return value;
     }
+    
+    public static UserType parse(int userType) {
+        UserType user = null;
+        
+        for (var s : UserType.values()) {
+            if (s.getValue() == userType) {
+                user = s;
+                break;
+            }
+        }
+        
+        return user;
+    }
 }

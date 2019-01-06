@@ -1,3 +1,7 @@
+schema {
+    query: RootQuery
+    # mutation: RootMutation
+}
 
 type RootMutation {
     food: foodMutation
@@ -48,13 +52,13 @@ type FoodListItemType {
 
 type foodMutation {
     createFood(food: FoodInputType!): Boolean
-    deleteFood(foodId: Int = null): Boolean
+    deleteFood(foodId: Int!): Boolean
     updateFood(foodId: Int!, food: FoodInputType!): Boolean
 }
 
 type FoodQuery {
-    categories: [CategoryType]
-    foods(limit: Int = null, offset: Int = null): [Food]
+    categories(limit: Int, offset: Int): [CategoryType]
+    foods(limit: Int, offset: Int): [Food]
 }
 
 scalar Milliseconds
@@ -62,11 +66,11 @@ scalar Milliseconds
 type OrderMutation {
     changeOrderStatus(orderId: Int!, status: OrderStatus!): Boolean
     createOrder(roomId: Int!, foodList: [FoodListItemInputType]!): Boolean
-    deleteOrder(orderId: Int = null): Boolean
+    deleteOrder(orderId: Int!): Boolean
 }
 
 type OrderQuery {
-    orders(limit: Int = null, offset: Int = null): [OrderType]
+    orders(limit: Int, offset: Int): [OrderType]
 }
 
 enum OrderStatus {
@@ -106,7 +110,7 @@ type RoomMutation {
 }
 
 type RoomQuery {
-    rooms(limit: Int = null, offset: Int = null): [room]
+    rooms(limit: Int, offset: Int): [room]
 }
 
 enum RoomStatus {
@@ -141,7 +145,7 @@ type UserMutation {
 }
 
 type UserQuery {
-    getUserList(limit: Int = null, offset: Int = null): [UserListItemType]
+    getUserList(limit: Int, offset: Int): [UserListItemType]
     token(user: UserInputType!): String
 }
 
@@ -150,9 +154,4 @@ enum UserType {
     WAITER
     ADMIN
     ROOT
-}
-
-schema {
-    query: RootQuery
-    mutation: RootMutation
 }

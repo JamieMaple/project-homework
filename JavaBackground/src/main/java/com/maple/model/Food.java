@@ -1,11 +1,18 @@
 package com.maple.model;
 
+import lombok.Data;
+
+import javax.persistence.Entity;
+
+@Entity
 public class Food extends Base {
-    public String name;
+    private String name;
     
-    public Double unitPrice;
+    private Double unitPrice;
     
-    public int Category;
+    private int categoryId;
     
-    public String imgUrl;
+    private String image;
+    
+    private String imgUrl;
 }

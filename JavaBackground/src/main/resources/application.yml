@@ -1,0 +1,25 @@
+server:
+  port: 2333
+
+graphql:
+  servlet:
+    mapping: /api/graphql
+    enabled: true
+  tools:
+    schemaLocationPattern: "**/*.graphql"
+
+graphiql:
+  enabled: true
+  mapping: /graphiql
+  endpoint:
+    graphql: /api/graphql
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    username: hotel
+    password: password
+    url: jdbc:mysql://localhost:3306/cs_hotel

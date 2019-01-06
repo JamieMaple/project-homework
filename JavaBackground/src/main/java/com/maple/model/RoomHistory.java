@@ -1,11 +1,15 @@
 package com.maple.model;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 public class RoomHistory extends Base {
-    public int roomId;
+    private int roomId;
     
-    public int waiterId;
+    private int waiterId;
     
-    public String name;
+    private String name;
     
-    public RoomStatus status;
+    @Enumerated(EnumType.ORDINAL)
+    private RoomStatus status;
 }

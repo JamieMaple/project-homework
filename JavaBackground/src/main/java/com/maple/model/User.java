@@ -1,15 +1,22 @@
 package com.maple.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
 public class User extends Base {
-    public String username;
+    private String username;
     
     private String password;
     
     private String salt;
     
-    private UserType type;
+    @Column(columnDefinition = "int")
+    private int type;
     
-    public void setPassword(String password) {
-        this.password = password;
+    public UserType getType() {
+        return UserType.parse(type);
     }
 }

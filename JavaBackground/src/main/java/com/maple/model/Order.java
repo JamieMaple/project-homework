@@ -1,15 +1,37 @@
 package com.maple.model;
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.persistence.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+@Entity
+@Table(name = "\"order\"")
 public class Order extends Base {
-    public int roomId;
+    private static ObjectMapper objectMapper = new ObjectMapper().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    private int roomId;
     
-    public int waiterId;
+    private int waiterId;
     
-    public String foodList;
+    private double totalPrice;
     
-    public double totalPrice;
+    @Column(name = "food_list", columnDefinition = "json")
+    private String foodList;
     
-    public OrderStatus status;
+    public List<FoodListItem> getFoodList() throws IOException {
+        var foods = Arrays.asList(objectMapper.readValue(foodList, FoodListItem[].class));
+        return foods;
+    }
     
-    public long finishAt;
+    @Column(columnDefinition = "int")
+    private int status;
+    
+    public OrderStatus getStatus() {
+        return OrderStatus.parse(status);
+    }
+    
+    private long finishAt;
 }

@@ -1,11 +1,17 @@
 package com.maple.model;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
 public class Room extends Base {
-    public String name;
+    private String name;
     
-    public int floor;
+    private int floor;
     
-    public RoomStatus status;
+    @Enumerated(EnumType.ORDINAL)
+    private RoomStatus status;
     
-    public long lastUpdateAt;
+    private long lastUpdateAt;
 }
