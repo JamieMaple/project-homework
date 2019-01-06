@@ -27,7 +27,7 @@ namespace DotNetCoreBackend.GraphQLSchema
                 Offset = 0;
             }
 
-            if (Limit <= 0 || Limit > max)
+            if (Limit <= 0)
             {
                 Limit = max;
             }
