@@ -12,4 +12,12 @@ public class Base {
     private long createAt;
     
     private long deleteAt;
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
 }

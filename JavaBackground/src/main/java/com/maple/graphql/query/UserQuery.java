@@ -1,11 +1,10 @@
 package com.maple.graphql.query;
 
+import com.maple.graphql.AuthContext;
 import com.maple.graphql.ClientError;
 import com.maple.model.User;
 import com.maple.service.UserService;
-import graphql.GraphQLError;
-import graphql.GraphQLException;
-import graphql.execution.Execution;
+import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 
@@ -22,7 +21,13 @@ public class UserQuery {
         this.userService = userService;
     }
     
-    public List<User> getUserList(int limit, int offset) {
+    public List<User> getUserList(int limit, int offset, DataFetchingEnvironment env) {
+        
+        if (!AuthContext.isAdmin(env)) {
+            ClientError.addPermissionError(env);
+            return null;
+        }
+        
         return userService.getUserList(limit, offset);
     }
     
@@ -30,8 +35,8 @@ public class UserQuery {
         var username = user.username.trim();
         var password = user.password.trim();
         if (username.isEmpty() || password.isEmpty()) {
-            throw new ClientError("bad input");
+            return "";
         }
-        return userService.login(username, password);
+        return userService.getUserToken(username, password);
     }
 }

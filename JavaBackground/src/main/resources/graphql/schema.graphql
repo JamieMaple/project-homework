@@ -1,12 +1,12 @@
 schema {
     query: RootQuery
-    # mutation: RootMutation
+#    mutation: RootMutation
 }
 
 type RootMutation {
     food: foodMutation
     order: OrderMutation
-    room: RoomMutation
+    room: RoomQuery
     user: UserMutation
 }
 
@@ -106,7 +106,7 @@ type RoomMutation {
     changeRoomStatus(roomId: Int!, status: RoomStatus!): Boolean
     createRoom(room: RoomInputType!): Boolean
     deleteRoom(roomId: Int!): Boolean
-    updateRoom(room: RoomInputType!): Boolean
+    updateRoom(roomId: Int!, room: RoomInputType!): Boolean
 }
 
 type RoomQuery {

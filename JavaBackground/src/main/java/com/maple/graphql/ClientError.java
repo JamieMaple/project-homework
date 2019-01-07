@@ -1,45 +1,40 @@
 package com.maple.graphql;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.ErrorType;
 import graphql.GraphQLError;
 import graphql.language.SourceLocation;
+import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
-import java.util.Map;
 
-public class ClientError extends RuntimeException implements GraphQLError {
-    private String message;
-    public ClientError(String message) {
-        this.message = message;
-    }
-    
+public class ClientError implements GraphQLError {
     @Override
-    @JsonIgnore
     public List<SourceLocation> getLocations() {
         return null;
     }
     
-    @Override
-    @JsonIgnore
-    public ErrorType getErrorType() {
-        return ErrorType.ValidationError;
+    private String message;
+    
+    public static void addError(DataFetchingEnvironment env, String message) {
+        env.getExecutionContext().addError(new ClientError(message));
     }
     
-    @Override
-    @JsonIgnore
-    public Map<String, Object> getExtensions() {
-        return null;
+    public static void addPermissionError(DataFetchingEnvironment env) {
+        addError(env, "Permission denied!");
     }
     
-    @Override
-    @JsonIgnore
-    public StackTraceElement[] getStackTrace() {
-        return super.getStackTrace();
+    public ClientError(String message) {
+        this.message = message;
     }
     
     @Override
     public String getMessage() {
         return message;
     }
+    
+    @Override
+    public ErrorType getErrorType() {
+        return ErrorType.ExecutionAborted;
+    }
 }
+

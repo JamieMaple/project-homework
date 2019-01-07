@@ -1,9 +1,9 @@
 package com.maple.model;
 
+import lombok.Getter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Entity
 public class User extends Base {
@@ -18,5 +18,17 @@ public class User extends Base {
     
     public UserType getType() {
         return UserType.parse(type);
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public String getSalt() {
+        return salt;
+    }
+    
+    public void setType(UserType type) {
+        this.type = type.getValue();
     }
 }
